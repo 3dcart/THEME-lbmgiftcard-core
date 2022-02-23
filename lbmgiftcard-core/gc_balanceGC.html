@@ -1,0 +1,289 @@
+<script>
+	function CheckCaptcha() {
+
+		var gcn = jQuery("#gcnumber").val();
+		if (gcn == "") {
+			alert('Please enter a gift card code');
+			jQuery('#checkBalanceForm button').prop("disabled", false);
+			return;
+		}
+
+		if (jQuery('#GCrecaptchaRobot textarea').val() == '') {
+			var captchaId = parseInt(jQuery('.recaptchaRobot').data('widgetid'));
+			grecaptcha.execute(captchaId);
+		}
+		else {
+			CheckBalance();
+		}
+	}
+
+	function CheckBalance() {
+
+		var gcn = jQuery("#gcnumber").val();
+
+		jQuery("#divBalanceBlock").addClass("hide");
+		jQuery("#noresults").addClass("hide");
+		jQuery("#activityResults").empty();
+
+		jQuery.post("gc_balance.asp", "gcnumber=" + gcn + "&g-recaptcha-response=" + jQuery('#GCrecaptchaRobot textarea').val(), function (data) {
+			if (data.success) {
+				jQuery("#spnOrigAmt").text("$" + data.OrigAmt);
+				jQuery("#spnNbr").text(data.Nbr);
+				jQuery("#spnStat").text(data.Stat);
+				jQuery("#spnBal").text("$" + data.Bal);
+				jQuery("#spnOrigDt").text(getDateWithFormat(data.OrigDt));
+				jQuery.each(data.Txs, function (i, val) {
+					var newDiv = jQuery(`<div id="activityResult` + i + `" class="activityResult clearfix"> <div class="col-sm-4"> <div class="colDate atCol"></div> </div> <div class="col-sm-4"> <div class="colUsed atCol"></div> </div> <div class="col-sm-4"> <div class="colAmount atCol"></div> </div> </div>`);
+					jQuery("#activityResults").append(newDiv)
+					jQuery("#activityResult" + i + " .colDate").text(getDateWithFormat(val.Dt));
+					jQuery("#activityResult" + i + " .colUsed").text(val.Typ.replace('SV ', ''));
+					jQuery("#activityResult" + i + " .colAmount").text("$" + val.Amt);
+				});
+				jQuery("#divBalanceBlock").removeClass("hide");
+				jQuery("#checkBalanceForm").addClass("hide");
+			}
+			else {
+				jQuery("#noresults").removeClass("hide");
+			}
+			grecaptcha.reset();
+		}, "json").always(function () {
+			jQuery('#checkBalanceForm button').prop("disabled", false);
+		});
+
+	}
+
+	function getDateWithFormat(date) {
+		var dateF = new Date(date);
+		return dateF.toLocaleDateString('en-US');
+	}
+
+</script>
+<section id="gcView" class="page-content">
+	<div class="container">
+		<!--START: gc-->
+		<div class="gcViewBlock">
+
+			<div id="checkBalanceForm" class="checkBalance">
+				<h2>Check Gift Card Balance</h2>
+				<h3>Enter your gift card code to see your current balance and activity</h3>
+				<div class="checkBalnceHolder">
+					<div class="gc-field">	
+						<input type="text" size="20" name="gcnumber" id="gcnumber" value="" placeholder="Gift Card Code" maxlength="30" class="txtBoxStyle form-control" />
+					</div>
+					<div class="gc-field">
+						<button type="button" onclick="this.disabled = true; CheckCaptcha();" class="btn btn-default btn-inverse gc-field-submit">Check Balance</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="clearfix hide" id="noresults">
+				<span class="no-details text-center">
+					<h3>The gift card code entered couldn't be found</h3>
+				</span>
+			</div>
+			
+			<div class="checkBalance balanceBlock hide" id="divBalanceBlock">
+				<h2>Gift Card Balance</h2>
+				<div class="balanceHolder">
+					<div class="balanceDetails clearfix">
+						<div class="col-sm-6 text-left">
+							<div class="product"><b>Gift Card Amount: </b><span id="spnOrigAmt"></span></div>
+							<div class="product"><b>Status: </b><span id="spnStat"></span></div>
+						</div>
+						<div class="col-sm-6 text-right">
+							<div class="product"><b>Card Number: </b><span id="spnNbr"></span></div>
+							<div class="product"><b>Issued Date: </b><span id="spnOrigDt"></span></div>
+						</div>
+					</div>
+					<div class="balanceAmount text-center">
+						<div class="balanceTitle">Balance:</div>
+						<div class="balance" id="spnBal"></div>
+					</div>
+					<div class="balanceBtns row">
+						<div class="col-sm-6">
+							<a href="" class="btn btn-default btn-inverse gc-field-submit" id="showActivity">Show Activity</a>
+						</div>
+						<div class="col-sm-6">
+							<a href="" class="btn btn-default btn-inverse gc-field-submit" id="NewSearch">Check Another Card</a>
+						</div>
+					</div>
+					<div class="activity" id="activity">
+						<div class="activityTitles clearfix">
+							<div class="col-sm-4 activityDate">Date</div>
+							<div class="col-sm-4 activityUsed">Activity</div>
+							<div class="col-sm-4 activityAmount">Amount</div>
+						</div>
+						<div id="activityResults">
+							<div class="activityResult clearfix">
+								<div class="col-sm-4">
+									 <div class="colDate atCol"></div>
+								</div>
+								<div class="col-sm-4">
+									<div class="colUsed atCol"></div>
+								</div>
+								<div class="col-sm-4">
+									<div class="colAmount atCol"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!--END: gc-->
+		<div class="clear"></div>
+		<!--START: CATEGORY_FOOTER-->
+		<div class="category-footer" id="gc_viewFooter">[CONTENT]</div>
+		<!--END: CATEGORY_FOOTER--> 
+	</div>
+</section>
+<div id="GCrecaptchaRobot" class="recaptchaRobot" 
+data-sitekey="[recaptcha_key]"
+data-size="[recaptcha_robot_size]"
+data-type="[recaptcha_robot_type]"
+data-theme="[recaptcha_robot_theme]"
+data-callback="CheckBalance">
+</div>
+
+<!--START: template_styles-->
+<link rel="stylesheet" href="/assets/templates/common-core/css/gc_view.css" type="text/css" media="screen" />
+<style>
+.checkBalance {
+    text-align: center;
+}
+	#activity{
+		display:none;
+	}
+	.checkBalance h2{
+		font-size:36px;
+		margin-top: 65px;
+	}
+	.checkBalance h3{
+    margin-top: 0;
+    font-size: 18px;
+    font-weight: 300;
+}
+	.checkBalnceHolder {
+    max-width: 430px;
+    margin: 40px auto;
+}
+	.gc-field {
+    margin-bottom: 20px;
+}
+button.gc-field-submit {
+    width: 100%;
+    text-transform: capitalize;
+    font-weight: 300;
+    border-radius: 3px;
+}
+input.txtBoxStyle.form-control {
+    border-radius: 3px;
+}
+.gcViewBlock {
+    max-width: 710px;
+    margin: auto;
+}
+.balanceDetails {
+    margin: 20px 0;
+}
+.balanceTitle {
+    font-size: 20px;
+    font-weight: 400;
+}
+.balanceAmount {
+    margin: 50px 0;
+}
+.balance {
+    font-size: 64px;
+    font-weight: 500;
+    line-height: 62px;
+}
+	.balanceBtns a{
+    width: 100%;
+    border-radius: 3px;
+    text-transform: capitalize;
+    font-weight: 400;
+}
+.activity {
+    margin: 40px 0;
+}
+.activityTitles {
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 15px;
+}
+	.atCol {
+    text-align: center;
+    padding: 20px 5px;
+		font-weight: 500;
+}
+	.activity .activityResult:nth-last-of-type(odd){
+		background:#e7e7e7;
+	}
+	div#o-wrapper {
+    display: contents;
+}
+	@media(max-width:767px){
+		.balanceDetails .text-right {
+    text-align: left;
+}
+		.balanceBtns a {
+    margin-bottom: 10px;
+}
+	.activityTitles {
+    display: none;
+}
+	.atCol {
+    text-align: right;
+}
+		.colDate:before{
+			text-align:left;
+			content: "Date: ";
+			float: left;
+		}
+		.colUsed:before{
+			text-align:left;
+			content: "Activity: ";
+			float: left;
+		}
+		.colAmount:before{
+			text-align:left;
+			content: "Amount: ";
+			float: left;
+		}
+	}
+</style>
+<!--END: template_styles-->
+<!--START: template_scripts-->
+<script>
+	jQuery("#showActivity").click(function(e){
+		e.preventDefault();
+		jQuery("#activity").slideToggle();
+		jQuery(this).text(function(i, text){
+			  return text === "Show Activity" ? "Hide Activity" : "Show Activity";
+		  })
+	});
+	
+	jQuery("#NewSearch").click(function(e){
+		e.preventDefault();
+		jQuery("#checkBalanceForm").removeClass("hide");
+		jQuery("#divBalanceBlock").addClass("hide");
+		jQuery("#noresults").addClass("hide");
+		jQuery("#activity").hide();
+		jQuery("#showActivity").text("Show Activity");
+		jQuery("#activityResults").empty();
+	});
+</script>
+<script>
+	var CaptchaCallback = function () {
+		jQuery('.recaptchaRobot').each(function (index, element) {
+			var id = jQuery(element).attr('id');
+			var widgetId = '';
+			widgetId = grecaptcha.render(id);
+			jQuery(element).attr('data-widgetId', widgetId);
+		});
+	};
+</script>
+<script src="https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit" async defer></script>
+<!--END: template_scripts-->

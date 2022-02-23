@@ -1,0 +1,191 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>[TITLE]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2, user-scalable=yes">
+    [META]
+
+    <!--START: FRAME_RSSFEEDS-->
+    <link rel="alternate" type="application/rss+xml" title="Featured Items (RSS 2.0)" href="[store_url]/rss.asp?type=home" />
+    <link rel="alternate" type="application/rss+xml" title="Products On Sale (RSS 2.0)" href="[store_url]/rss.asp?type=onsale" />
+    <link rel="alternate" type="application/rss+xml" title="New Releases (RSS 2.0)" href="[store_url]/rss.asp?type=newreleases" />
+    <link rel="alternate" type="application/rss+xml" title="Best Sellers (RSS 2.0)" href="[store_url]/rss.asp?type=bestsellers" />
+    <link rel="alternate" type="application/rss+xml" title="Latest Blog Posts (RSS 2.0)" href="[store_url]/rss.asp?type=blog" />
+    <!--END: FRAME_RSSFEEDS-->
+
+    <!--START: page_styles-->
+    <link rel="stylesheet" href="https://use.typekit.net/bxo2vpy.css">
+    <link rel="stylesheet" href="assets/templates/common-core/lib/bootstrap/css/bootstrap.css" type="text/css" />
+    <link rel="StyleSheet" href="assets/templates/common-core/css/core.css" type="text/css" />
+    [page_styles]
+    <link rel="StyleSheet" href="assets/templates/[template]/css/[stylesheet]" type="text/css" />
+    <!--END: page_styles-->
+
+</head>
+<body class="[body_class]" data-currency="[currency_symbol]" data-decimal="[decimal_places]">
+	<div id="o-wrapper" class="o-wrapper">
+	<div id="skip"><a href="#navbar">Skip to Main Content</a></div>
+
+    <header class="site-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-3 hide text-left head-mobile-nav">
+                    <a href="#" id="mobile-menu-trigger" aria-label="menu trigger">
+                        <span class="icon-menu" role="presentation"></span>
+                    </a>
+                </div>
+
+                <div class="col-sm-3 col-xs-6">
+                    <div class="logo">
+                        <!--START: global_header-->
+                        <h3 class="store-name">[storename]</h3>
+                        <h4 class="store-slogan">[storeslogan]</h4>
+                        <!--END: global_header-->
+                    </div>
+                </div>
+
+                <div class="col-xs-6 text-right visible-xs head-mobile-nav">
+                    <div class="clearfix c-button--push-right" id="c-button--push-rightMob">
+                            <span class="icon-basket cart-icon" role="presentation"></span>
+                        </div>
+                </div>
+
+                <div class="col-sm-9 col-xs-12 clearfix headerRight">
+                    <div class="dtCart hidden-xs">
+                        <div class="clearfix" id="c-button--push-right">
+                            <span class="icon-basket cart-icon" role="presentation"></span>
+                        </div>
+                    </div>
+					<div class="checkoutBalance">
+						<a href="gc_balance.asp">Check Gift Card Balance</a>
+					</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--Get current page template-->
+    [page_content]
+    <!--/Get current page template-->
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        
+    </footer>
+	</div>
+    <nav id="mobile-menu" class="mobile-menu">
+        <div class="mobile-menu-inner">
+            <div class="mobile-menu-close">
+                <a href="#" aria-label="Menu Close"></a>
+            </div>
+            <div class="mobile-menu-widget">
+                <h3>Menu Links</h3>
+                <div id="mobile-menulinks"></div>
+            </div>
+            <div class="mobile-menu-widget">
+                <h3>Categories</h3>
+                <div id="mobile-categories"></div>
+            </div>
+        </div>
+    </nav>
+	
+	<!-- View Cart Block -->
+	<div id="c-menu--push-right" class="c-menu c-menu--push-right">
+		<button class="c-menu__close">Close Cart &rarr; <span>[ITEMSINCART] Items</span></button>
+		<div id="car-dd-trigger" class="header-dd cart-dd">
+			<!--START: shopping_cart-->
+			<!--START: shopping_cart_full-->
+			<div class="cart-dropdown">
+				<div id="dropdown-cart" class="dropdown-cart"></div>
+			   <div class="clear"></div>
+
+				<div class="col-group cart-dd-checkout clearfix">
+					<div class="totalBlock clearfix">
+						<div class="dd-cart-left">
+							<button class="dd-cart-btn" onClick='window.location.href="/checkout_one.asp"'>Checkout</button>
+						</div>
+						<div class="dd-cart-right">
+							<div class="dd-sub-total">Subtotal: [CARTSUBTOTAL]</div>
+							<div class="dd-total">TOTAL: [CARTSUBTOTAL]</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--END: shopping_cart_full-->
+
+			<!--START: shopping_cart_empty-->
+			<div class="cart-dropdown">
+				<div class="dd-cart-empty">YOUR CART IS EMPTY</div>
+			</div>
+			<!--END: shopping_cart_empty-->
+
+			<!--END: shopping_cart-->
+		</div>
+		<div class="clear"></div>
+		
+	</div><!-- /items push-right -->
+	<div id="c-mask" class="c-mask"></div><!-- /c-mask -->
+	<!-- View Cart Block -->
+
+    <!--START: quickview_modal-->
+    [quickview_modal]
+    <!--END: quickview_modal-->
+    
+    <link rel="stylesheet" href="assets/templates/common-core/lib/fontello/css/fontello.min.css" type="text/css" />
+    <link rel="stylesheet" href="assets/templates/common-core/lib/fontello/css/animation.css" type="text/css" />
+
+    
+    <!--START: page_scripts-->
+    <script src='assets/templates/common-core/lib/jquery.min.js'></script>
+    <script src='assets/templates/common-core/lib/jquery-migrate-3.0.1.min.js'></script>
+    <script src="assets/templates/common-core/lib/bootstrap/js/bootstrap.js"></script>
+    <script src="assets/templates/common-core/js/core.js"></script>
+    <script src="assets/templates/[template]/js/main.js?v2"></script>
+    [page_scripts]
+    <!--END: page_scripts-->
+
+    <!--START: quicksearch-->
+    <link rel="stylesheet" href="assets/templates/common-core/quicksearch/quicksearch.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="assets/templates/common-core/quicksearch/jquery.quicksearch.js"></script>
+    <script type="text/javascript">
+        jQuery(function () {
+            jQuery('#searchlight').searchlight('/search_quick.asp');
+        });
+    </script>
+    <!--END: quicksearch-->
+
+<!--START: 3dcart stats-->
+<div class="stats hidden"> 
+    <script type="text/javascript">
+        //<![CDATA[
+        var file='/stats/count.asp';
+        var stats_d=new Date();
+        var stats_s=stats_d.getSeconds();
+        var stats_m=stats_d.getMinutes();
+        var stats_x=stats_s*stats_m;
+        var prdID = '[catalogid]';
+        var catID = '[catid]';
+        stats_f='' + escape(document.referrer); stats_f=stats_f.replace('_','----');
+        if (navigator.appName=='Netscape'){stats_b='NS';}
+        if (navigator.appName=='Microsoft Internet Explorer'){stats_b='MSIE';}
+        if (navigator.appVersion.indexOf('MSIE 3')>0) {stats_b='MSIE';}
+        stats_u='' + escape(document.URL); stats_u=stats_u.replace('_','----'); stats_w=screen.width; stats_h=screen.height;
+        stats_v=navigator.appName;
+        stats_fs = window.screen.fontSmoothingEnabled;
+        if (stats_v != 'Netscape') {stats_c=screen.colorDepth;}
+        else {stats_c=screen.pixelDepth;}
+        stats_j=navigator.javaEnabled();
+        info='w=' + stats_w + '&h=' + stats_h + '&c=' + stats_c + '&r=' + stats_f + '&u='+ stats_u + '&fs=' + stats_fs + '&b=' + stats_b + '&x=' + stats_x + '&cat=' + catID + '&prd=' + prdID;
+        document.write('<img src="' + file + '?'+info+ '" width="1" height="1" border="0" alt="stats" />');
+        //]]>
+    </script>
+    <noscript>
+        <img src="/stats/count.asp" width="90" height="30" alt="" />
+    </noscript>
+</div>
+<!--END: 3dcart stats-->
+    
+</body>
+</html>
