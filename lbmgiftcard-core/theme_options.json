@@ -15,14 +15,14 @@
           "label": "Primary Color",
           "name": "primary_color",
           "type": 2,
-          "value": "",
+          "value": "43464e",
           "group": 0
         },
         {
           "label": "Secondary color",
           "name": "secondary_color",
           "type": 2,
-          "value": "",
+          "value": "000",
           "group": 0
         }
       ]
@@ -35,14 +35,14 @@
           "label": "Primary Color",
           "name": "primary_color",
           "type": 2,
-          "value": "",
+          "value": "43464e",
           "group": 0
         },
         {
           "label": "Secondary color",
           "name": "secondary_color",
           "type": 2,
-          "value": "",
+          "value": "000",
           "group": 0
         }
       ]

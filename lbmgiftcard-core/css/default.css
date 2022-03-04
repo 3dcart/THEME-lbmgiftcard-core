@@ -145,9 +145,9 @@ section.category-products {
 }
 .btn-default.btn-inverse,
 .btn-primary {
-    color: #;
-    background-color: #;
-    border-color: #;
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
 }
 .btn-default.btn-inverse:hover,
 .btn-primary:hover {
@@ -634,7 +634,6 @@ span.freeshipping {
     position: absolute;
     bottom: -1px;
     z-index: 10;
-
 }
 .home-page-content {
     padding-top: 0;
@@ -1241,9 +1240,9 @@ label.gc-label {
   width: 50%;
 }
 .cart-dropdown .cart-dd-checkout .dd-cart-left .dd-cart-btn {
-  color: #;
+  color: #fff;
     font-family: "Open Sans", sans-serif;
-    background: #;
+    background: #000;
     font-weight: 500;
     line-height: 1;
     border: none;
@@ -1408,6 +1407,7 @@ label.gc-label {
 .c-menu--slide-bottom .c-menu__items,
 .c-menu--push-top .c-menu__items,
 .c-menu--push-bottom .c-menu__items {
+
   display: inline-block;
   text-align: center;
 }
