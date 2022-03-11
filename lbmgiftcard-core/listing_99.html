@@ -491,22 +491,9 @@
                             <!--END: create_review_link-->
                         </div>								
 
-		                <!--START: previouslybought-->
-		                <div id="divPrevMessage_[catalogid]" style="display: none; margin-bottom:15px;">
-			                <em>You previously purchased this item on&nbsp;<span id="spnPrevPurchDate_[catalogid]"></span></em>
-			                <br /><a href="" id="lnkPrevPurchOrderTracking_[catalogid]">View this order</a>
-		                </div>
-		                <script>
-			                if ("[userid_enc]" != "") {				
-				                setTimeout("checkPrevPurch('[userid_enc]','[catalogid]');", 500);
-			                }
-		                </script>
-		                <!--END: previouslybought-->
-
                         <!--START: pricing-->
                         <div class="pricingBlock hide" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                             <meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/NewCondition" />
-                            <meta itemprop="availability" content="[availability_snippet]" />
                             <meta itemprop="priceCurrency" content="[priceCurrency]" />
                             <meta itemprop="url" itemtype="https://schema.org/url" content="[product_url]" />
                             <meta itemprop="priceValidUntil" content="2050-12-31" />
@@ -553,16 +540,6 @@
                         <!--START: id-->
                         <div class="product-id hide"><strong>[product_id]:</strong> <span id="product_id" itemprop="sku">[id]</span></div>
                         <!--END: id-->
-
-                        <div id="availabilityInfo" class="availabilityInfo">
-                            <!--START: product_availability-->
-                            <span class="availability-header">[product_Header-availability]</span>
-                            <span id="availability" class="product_availability availability-item">[availability_itemprop]</span>
-                            <!--END: product_availability-->
-                            <!--START: freeshippingblock-->
-                            <span class="freeshipping availability-item">[freeshipping]</span>
-                            <!--END: freeshippingblock-->
-                        </div>
 
                         <!--START: instorePickup-->
                         <div id="instorePickupDIV" class="instorePickupDIV">
@@ -625,7 +602,7 @@
                                 </div>
                                 <!--END: opt-title-->
                                 <!--START: opt-regular-->
-                                <div class="opt-regular">
+                                <div class="opt-regular" [opt-regular-style-display]>
                                     <div class="opt-label">
                                         <label class="label">[OPTIONLABEL]</label>
                                         <!--START: required-->
@@ -660,34 +637,12 @@
 									<input type="hidden" size="3" name="qty-0" value="1" onChange="validateValues(document.add,1);" class="form-control" />
 									<label for="text[oname]" style="margin-top: 10px;font-weight: 300;">Enter whole amount between $<span id="minVal"></span> - $<span id="maxVal"></span> USD</label>
                                 </div>
-								<script>
-								var ex1value = jQuery("#et1").text();
-								var ex2value = jQuery("#et2").text();
-								jQuery("#rangeInput").attr("value", ex1value);
-								jQuery("#rangeInput").attr("min", ex1value);
-								jQuery("#rangeInput").attr("max", ex2value);
-								jQuery("#minVal").text(ex1value);
-								jQuery("#maxVal").text(ex2value);
-								var rangeSlider = function(){
-								  var slider = jQuery('.range-slider'),
-									  range = jQuery('.range-slider__range'),
-									  value = jQuery('.range-slider__value');
-
-								  slider.each(function(){
-
-									value.each(function(){
-									  var value = jQuery(".range-slider__range").attr('value');
-									  jQuery(this).html("$" + value);
-									});
-
-									range.on('input.range-slider__range', function(){
-									  jQuery(this).next(value).html("$" + this.value);
-									});
-								  });
-								};
-
-								rangeSlider();
-								</script>
+                                <script>
+                                    if (typeof rangeSlider === "function")
+                                    {
+                                        rangeSlider();
+                                    }
+                                </script>
                                 <!--END: text-format-->
                                 <!--START: qty-format-->
                                 <label class="qty-format"><input type="text" size="3" name="text[oname]" value="0" class="form-control customoption" /></label>
@@ -1109,512 +1064,12 @@
                             <!--END: Google_Pay-->
                         </div>
                         <!--END: addtocart-->
-                        <!--START: BreadCheckoutListing-->
-                        <script>
-                            //////////////////////////////////////////////////////////////////////////////////////////////////
-                            //Customize the Bread Checkout Experience
-                            //////////////////////////////////////////////////////////////////////////////////////////////////
-                            // Reference
-                            // https://docs.getbread.com/docs/integration/shopify/customize-experience/#style-the-bread-button
-                            // https://docs.getbread.com/docs/manual-integration/button-styling/#button-structure
-                            //
-                            // leave this variable blank in order to use default Bread Checkout Styles
-                            var BreadCheckoutCustomStyleCSS = '';
-                            //
-                            // or to use a custom CSS - All CSS values contained in quotes should use double quotes - example:
-                            // var BreadCheckoutCustomStyleCSS = '@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);#bread-button,body,html{height:100%;margin:0;width:100%}body{display:table}#bread-button{background:#EEE;color:#181818;display:table-cell;font-family:"Open Sans",sans-serif;font-size:16px;text-align:center;vertical-align:middle}.bread-text{cursor:pointer;text-decoration:underline;transition:all .2s ease}.bread-text:hover{color:#197797}.bread-dur{text-transform:lowercase;word-spacing:-3px;margin-left:-3px}.bread-embed-inner,.bread-label .bread-embed-icon{display:inline-block}.bread-btn .bread-as-low-as:before,.bread-label .bread-as-low-as:before{content:"As low as "}.bread-btn .bread-for:before{content:"For "}';
-                            ///////////////////////////////////////////////////////////////////////////////////////////////////
-                        </script>
-                        <div id="bread-label" data-bread-default-size="true"></div>
-                        [BREADCHECKOUT_SCRIPTS_BLOCK]
-                        <!--END: BreadCheckoutListing-->
-                        <!--START: affirm_button-->
-                        <div id="affirmButton" class="affirm-as-low-as" data-promo-id="[affirmPromoId]" data-amount="[intTotal]" data-page-type="product" data-brand="[affirmBrand]" data-sku="[affirmSKU]" data-category="[affirmCategory]"></div>
-                        <script>
-                            _affirm_config = {
-                                public_api_key: "[affirmPublicKey]",
-                                script: "[affirmJsUrl]"
-                            };
-                            (function (l, g, m, e, a, f, b) { var d, c = l[m] || {}, h = document.createElement(f), n = document.getElementsByTagName(f)[0], k = function (a, b, c) { return function () { a[b]._.push([c, arguments]) } }; c[e] = k(c, e, "set"); d = c[e]; c[a] = {}; c[a]._ = []; d._ = []; c[a][b] = k(c, a, b); a = 0; for (b = "set add save post open empty reset on off trigger ready setProduct".split(" "); a < b.length; a++)d[b[a]] = k(c, e, b[a]); a = 0; for (b = ["get", "token", "url", "items"]; a < b.length; a++)d[b[a]] = function () { }; h.async = !0; h.src = g[f]; n.parentNode.insertBefore(h, n); delete g[f]; d(g); l[m] = c })(window, _affirm_config, "affirm", "checkout", "ui", "script", "ready");
-                            affirm.ui.ready(function () {
-                                    // Options for the observers (which mutations to observe)
-									const config = { attributes: true, childList: true, subtree: true };
-
-									var spanPriceElem = document.getElementById('price');
-									if (jQuery != null && spanPriceElem != undefined && spanPriceElem != null) {
-
-										// Callback function to execute when the product price is changed
-										const priceCallback = function(mutationsList, observer) {
-											var arrPrice = mutationsList[0].target.innerText.match(/\d+/);
-
-											if (arrPrice != null) {
-												document.getElementById('affirmButton').setAttribute('data-amount', arrPrice.input.match(/\d+/g).join(''));
-												if (affirm.ui != null)
-													affirm.ui.refresh();
-											}
-										};
-								
-										const priceObserver = new MutationObserver(priceCallback);
-										priceObserver.observe(spanPriceElem, config);
-									}	
-
-									var spanProductElem = document.getElementById('product_id');
-									if (jQuery != null && spanProductElem != undefined && spanProductElem != null || 1 == 1) {
-
-										// Callback function to execute when the sku is changed
-										const productCallback = function(mutationsList, observer) {
-											document.getElementById('affirmButton').setAttribute('data-sku', mutationsList[0].target.innerText);
-											if (affirm.ui != null)
-												affirm.ui.refresh();
-
-										};
-								
-										const productObserver = new MutationObserver(productCallback);
-										productObserver.observe(spanProductElem, config);									
-
-									}
-                            });
-                        </script>
-                        <div class="clear"></div>
-                        <!--END: affirm_button-->
-                        <!--START: klarna_button-->
-                        <div id="klarna_button">
-                            <!--START: klarna_button_script-->
-                            <!--Klarna widget dynamically inserted-->
-                            <!--END: klarna_button_script-->
-                        </div>
-                        <!--END: klarna_button-->
-                        <!--START: credova_button_script-->
-                        <div class="credova-button" data-amount="[Credova_DataAmount]" data-type="[Credova_DataType]" id="credova-button-id"></div>
-                        [Credova_ButtonJS]
-                        <!--END: credova_button_script-->
-                        <!--START: frame_likebutton-->
-                        <div class="likebutton">[frame_likebutton]</div>
-                        <!--END: frame_likebutton-->
                     </div>
                 </div>
             </div>
-
-            <!--START: tabs-->
-            <div id="rTabs" class="rTabs">
-                <ul>
-                    <!--START: extended_description-->
-                    <li><a href="#tab-1">[product_Header-description]</a></li>
-                    <!--END: extended_description-->
-                    <!--START: product_features_tab-->
-                    <li><a href="#tab-2">Product Features</a></li>
-                    <!--END: product_features_tab-->
-                    <!--START: reviews_tab-->
-                    <li id="reviewsTab"><a href="#tab-4">[reviews_header]</a></li>
-                    <!--END: reviews_tab-->
-                    <!--START: qa-->
-                    <li><a href="#tab-5">[productqa_header]</a></li>
-                    <!--END: qa-->
-                    <!--START: extra_field_6-->
-                    <li><a href="#tab-6">[product_extrafield6]</a></li>
-                    <!--END: extra_field_6-->
-                    <!--START: extra_field_7-->
-                    <li><a href="#tab-7">[product_extrafield7]</a></li>
-                    <!--END: extra_field_7-->
-                    <!--START: extra_field_8-->
-                    <li><a href="#tab-8">[product_extrafield8]</a></li>
-                    <!--END: extra_field_8-->
-                    <!--START: extra_field_9-->
-                    <li><a href="#tab-9">[product_extrafield9]</a></li>
-                    <!--END: extra_field_9-->
-                    <!--START: extra_field_10-->
-                    <li><a href="#tab-10">[product_extrafield10]</a></li>
-                    <!--END: extra_field_10-->
-                    <!--START: extra_field_11-->
-                    <li><a href="#tab-11">[product_extrafield11]</a></li>
-                    <!--END: extra_field_11-->
-                    <!--START: extra_field_12-->
-                    <li><a href="#tab-12">[product_extrafield12]</a></li>
-                    <!--END: extra_field_12-->
-                    <!--START: extra_field_13-->
-                    <li><a href="#tab-13">[product_extrafield13]</a></li>
-                    <!--END: extra_field_13-->
-                </ul>
-
-                <div id="tab-1">
-                    <div class="item" itemprop="description">[extended_description]</div>
-                </div>
-
-                <!--START: PRODUCT_FEATURES_BLOCK-->
-                <div id="tab-2" style="display: none;">
-                    <div class="info productFeaturesBlock">
-                        <ul>
-                            <!--START: PRODUCT_FEATURES-->
-                            <li>
-                                <!--START: product_feature_title--><strong class="feat-title">[product_feature_title]:</strong>
-                                <!--END: product_feature_title--><span class="feat-name">[product_feature_name]</span>
-                            </li>
-                            <!--END: PRODUCT_FEATURES-->
-                        </ul>
-                    </div>
-                </div>
-                <!--END: PRODUCT_FEATURES_BLOCK-->
-                <!--START: reviews-->
-                <div id="tab-4" style="display: none;">
-
-                    <!--START: reviews_ratings-->
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="reviews-snapshot-header">
-                                <h4>Rating Snapshot</h4>
-                                <p>Select a row below to filter reviews.</p>
-                            </div>
-
-                            <section>
-                                <div class="row">
-                                    <div class="col-sm-2 col-xs-3 text-right rating-filter-label"><a onclick="javascript:ShowStarRating('5');">5 Stars</a></div>
-                                    <div class="col-sm-8 col-xs-7">
-                                        <span class="bv-content-secondary-ratings-container">
-                                            <a onclick="javascript:ShowStarRating('5');"><span class="bv-content-secondary-ratings-value" style="width:[rating_pct_5]% !important;"></span></a>
-                                        </span>
-                                    </div>
-                                    <div class="col-sm-2 col-xs-2">[rating_total_star_5]</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-2 col-xs-3 text-right rating-filter-label"><a onclick="javascript:ShowStarRating('4');">4 Stars</a></div>
-                                    <div class="col-sm-8 col-xs-7">
-                                        <span class="bv-content-secondary-ratings-container">
-                                            <a onclick="javascript:ShowStarRating('4');"><span class="bv-content-secondary-ratings-value" style="width:[rating_pct_4]% !important;"></span></a>
-                                        </span>
-                                    </div>
-                                    <div class="col-sm-2 col-xs-2">[rating_total_star_4]</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-2 col-xs-3 text-right rating-filter-label"><a onclick="javascript:ShowStarRating('3');">3 Stars</a></div>
-                                    <div class="col-sm-8 col-xs-7">
-                                        <span class="bv-content-secondary-ratings-container">
-                                            <a onclick="javascript:ShowStarRating('3');"><span class="bv-content-secondary-ratings-value" style="width:[rating_pct_3]% !important;"></span></a>
-                                        </span>
-                                    </div>
-                                    <div class="col-sm-2 col-xs-2">[rating_total_star_3]</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-2 col-xs-3 text-right rating-filter-label"><a onclick="javascript:ShowStarRating('2');">2 Stars</a></div>
-                                    <div class="col-sm-8 col-xs-7">
-                                        <span class="bv-content-secondary-ratings-container">
-                                            <a onclick="javascript:ShowStarRating('2');"><span class="bv-content-secondary-ratings-value" style="width:[rating_pct_2]% !important;"></span></a>
-                                        </span>
-                                    </div>
-                                    <div class="col-sm-2 col-xs-2">[rating_total_star_2]</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-2 col-xs-3 text-right rating-filter-label"><a onclick="javascript:ShowStarRating('1');">1 Stars</a></div>
-                                    <div class="col-sm-8 col-xs-7">
-                                        <span class="bv-content-secondary-ratings-container">
-                                            <a onclick="javascript:ShowStarRating('1');"><span class="bv-content-secondary-ratings-value" style="width:[rating_pct_1]% !important;"></span></a>
-                                        </span>
-                                    </div>
-                                    <div class="col-sm-2 col-xs-2">[rating_total_star_1]</div>
-                                </div>
-                            </section>
-
-                            <div id="filteredSearchResults" style="display: none;">
-                                <span class="btn btn-primary filterRemover" data-filtertype="1"><b id="StarRating">4 Stars</b></span>
-                                <span class="btn btn-default" onclick="ShowStarRating('');"><b>Clear Filter</b> <span data-filtertype="6" class="filterRemover">×</span></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6 average-customer-rating-sm">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="reviews-snapshot-header reviews-snapshot-header-right">
-                                        <h4>Average Customer Ratings</h4>
-                                        <p><span class="reviews-stars rating-[rating_star]"></span>[rating_average]</p>
-                                    </div>
-                                    <!--START: review_link-->
-                                    <div class="review_link button">[review_link]</div>
-                                    <!--END: review_link-->
-                                </div>
-                                <div class="col-lg-6">
-                                    <!--START: reviews_sorting-->
-                                    <div class="form-group reviews_sorting">
-                                        <label>[reviews_sorting]</label>
-                                        <label>
-                                            <select name="review_sorting" onchange="javascript:ReviewSortingChange('','',true);" class="form-control" customoption="customoption">
-                                                [dropdown_reviews_sorting]
-                                            </select>
-                                        </label>
-                                    </div>
-                                    <!--END: reviews_sorting-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--END: reviews_ratings-->
-
-                    <div class="clearfix"></div>
-                    <!--START: reviewsBlock-->
-                    <div id="reviewsBlock" class="reviewsBlock" itemprop="review" itemscope itemtype="http://schema.org/Review">
-                        <input type="hidden" id="ResultsCount" value="[intResultsCount]" />
-                        <!--START: user_reviews-->
-                        <div class="user_reviews clearfix">
-                            <div class="star-rating">
-                                <span class="reviews-stars rating-[rating]"></span>
-                            </div>
-                            <div class="review-info">
-                                <div class="review-shortDesc" itemprop="name">[short_review]</div>
-                                <div class="review-longDesc" itemprop="description">[long_review]</div>
-                                <div class="review-images">
-                                    <!--START: review_image-->
-                                    <a href="assets/product_review_files/[item-name]" data-gallery="review_image" class="MagicZoom" title="[short_review]" data-options="zoomCaption: bottom; hint: off">
-                                        <img itemprop="image" src="thumbnail.asp?file=assets/product_review_files/[item-name]&maxx=100&maxy=100" alt="reviews" class="img-responsive" />
-                                    </a>
-                                    <!--END: review_image-->
-                                </div>
-                                <!--START: rev_allowratings-->
-                                <div class="rev_allowratings">
-                                    [reviews_helpful]&nbsp;
-                                    <input class="btn btnYes btn-default" type="button" value="[reviews_helpyes]" onclick="updateRevStats('[r_id]',[rev_id], 1)" />
-                                    <input class="btn btnNo btn-default" type="button" value="[reviews_helpno]" onclick="updateRevStats('[r_id]',[rev_id],-1)" />
-                                    <span id="spnReview[rev_id]"><!--START: rev_helpcount--><strong>[rev_helpful]&nbsp;[reviews_of]&nbsp;[rev_votes]</strong>&nbsp;<em>[reviews_found-helpful]</em><!--END: rev_helpcount--></span>
-                                </div>
-                                <!--END: rev_allowratings-->
-                                <em class="reviewed-by">
-                                    Reviewed by:&nbsp;<!--START: review_verified--><span class="verified-buyer">[reviews_verified-buyer]</span>&nbsp;<!--END: review_verified--><span itemprop="author">[user_name]</span> from [user_city] on [review_date]
-                                </em>
-                                <div style="display: none;" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating"> <span itemprop="ratingValue">[rating]</span></div>
-                            </div>
-                            <div class="clear"></div>
-                        </div>
-                        <!--END: user_reviews-->
-                    </div>
-                    <script>
-                        intResultsCount = document.getElementById('ResultsCount').value;
-                    </script>
-                    <!--END: reviewsBlock-->
-                    <!--START: LoadMoreButton-->
-                    <div class="text-center" id="divLoadMore">
-                        <div id="review-load-spinner" class="review-load-spinner"><span class="icon-spin2 animate-spin"></span></div>
-                        <a onclick="LoadMore();" class="add-to-cart btn btn-default">
-                            <span class="buyitlink-text">Load More</span>
-                        </a>
-                    </div>
-                    <!--END: LoadMoreButton-->
-                </div>
-                <!--END: reviews-->
-                <!--START: qa_tab-->
-                <div id="tab-5" style="display: none;">
-                    <!--START: qa_link-->
-                    <div class="qa_link button right">
-                        <a href="#" data-toggle="modal" data-target="#qalist-modal">[productqa_viewall]</a>
-                        <div id="qalist-modal" class="modal fade" tabindex="-1" role="dialog">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title">[productqa_header]</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <iframe src="/productqa.asp?action=listallqa&catalogid=[catalogid]" aria-label="iframe"></iframe>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--END: qa_link-->
-
-                    <div class="qaBlock" itemscope itemtype="https://schema.org/FAQPage">
-                        <!--START: qa_list-->
-                        <div class="qa_list" itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question">
-                            <div class="qa_question">
-                                <h4 class="q"><strong>[productqa_q]</strong> <span id="question[qa_id]" itemprop="name">[question]</span> </h4>
-                                <div class="q-author">
-                                    <em>
-                                        [productqa_question-submit-by]: <span>[q_user_name]</span>
-                                        - [q_date_added]
-                                    </em>
-                                </div>
-                            </div>
-
-                            <!--START: qa_answers-->
-                            <div class="qa_answers" itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-                                <div class="qa_answer"><strong>[productqa_a]</strong> <span itemprop="text">[answer]</span></div>
-                                <!--START: qa_allowratings-->
-                                <div class="qa_allowratings">
-                                    [productqa_answer-helpful]&nbsp;
-                                    <input type="button" class="btn btnYes btn-default" value="[productqa_helpyes]" onclick="updateQAStats('[ans_id]',[a_id],1)" />
-                                    <input type="button" class="btn btnNo btn-default" value="[productqa_helpno]" onclick="updateQAStats('[ans_id]',[a_id],-1)" />
-                                    <em><strong><span id="spn[a_id]">[a_helpful]&nbsp;[productqa_of]&nbsp;[a_votes]</span></strong>&nbsp;[productqa_found-helpful]</em>
-                                </div>
-                                <!--END: qa_allowratings-->
-                                <div class="ans-author"><em>[productqa_answer-submit-by]: <span>[a_user_name] ([a_date_added])</span></em></div>
-                            </div>
-                            <!--END: qa_answers-->
-                            <!--START: qa_noanswers-->
-                            <div class="qa_noanswers">[productqa_no-answers]</div>
-                            <!--END: qa_noanswers-->
-
-                            <div class="clear"></div>
-                            <!--START: qa_allowuserresponse-->
-                            <div class="button text-right">
-                                <a href="#" class="qa-answer-btn btn btn-default" data-question="[qa_id]">[productqa_submit-answer] <span class="icon-angle-right"></span></a>
-                            </div>
-                            <!--END: qa_allowuserresponse-->
-                            <div class="clear"></div>
-                        </div>
-                        <!--END: qa_list-->
-                        <div class="button text-right">
-                            <a href="#" class="qaLink btn btn-primary"><i class="icon-help-circled" role="presentation"></i>[productqa_newquestion]</a>
-                        </div>
-                    </div>
-                </div>
-                <!--END: qa_tab-->
-                <!--START: extra_field_6_tab-->
-                <div id="tab-6" style="display: none;">
-                    <div class="info">[extra_field_6]</div>
-                </div>
-                <!--END: extra_field_6_tab-->
-                <!--START: extra_field_7_tab-->
-                <div id="tab-7" style="display: none;">
-                    <div class="info">[extra_field_7]</div>
-                </div>
-                <!--END: extra_field_7_tab-->
-                <!--START: extra_field_8_tab-->
-                <div id="tab-8" style="display: none;">
-                    <div class="info">[extra_field_8]</div>
-                </div>
-                <!--END: extra_field_8_tab-->
-                <!--START: extra_field_9_tab-->
-                <div id="tab-9" style="display: none;">
-                    <div class="info">[extra_field_9]</div>
-                </div>
-                <!--END: extra_field_9_tab-->
-                <!--START: extra_field_10_tab-->
-                <div id="tab-10" style="display: none;">
-                    <div class="info">[extra_field_10]</div>
-                </div>
-                <!--END: extra_field_10_tab-->
-                <!--START: extra_field_11_tab-->
-                <div id="tab-11" style="display: none;">
-                    <div class="info">[extra_field_11]</div>
-                </div>
-                <!--END: extra_field_11_tab-->
-                <!--START: extra_field_12_tab-->
-                <div id="tab-12" style="display: none;">
-                    <div class="info">[extra_field_12]</div>
-                </div>
-                <!--END: extra_field_12_tab-->
-                <!--START: extra_field_13_tab-->
-                <div id="tab-13" style="display: none;">
-                    <div class="info">[extra_field_13]</div>
-                </div>
-                <!--END: extra_field_13_tab-->
-            </div>
-            <!--END: tabs-->
-            <!--START: rewardsPoints-->
-            <div class="rewardsPointsBlock sub-section">
-                <div class="header">
-                    <h3 class="page_heading">[product_Header-rewards]</h3>
-                </div>
-                <div class="item" id="divRewardPoint">[product_rewardsDescription]</div>
-            </div>
-            <!--END: rewardsPoints-->
-            <!--START: related_0-->
-            <div class="relatedBlock sub-section">
-                <div class="header">
-                    <h2 class="page_heading">[product_Header-relateditems]</h2>
-                </div>
-                <!--START: related_items0-->
-                <div class="product-items product-items-[product-cols-number]">
-                    <!--START: ITEM_TEMPLATE-->
-                    [product_items]
-                    <!--END: ITEM_TEMPLATE-->
-                </div>
-                <!--END: related_items0-->
-            </div>
-            <!--END: related_0-->
-            <!--START: accessories_0-->
-            <div class="accessoriesBlock sub-section">
-                <div class="header">
-                    <h3 class="page_heading">[product_Header-accessories]</h3>
-                </div>
-                <!--START: accessories_items0-->
-                <div class="product-items product-items-[product-cols-number]">
-                    <!--START: ITEM_TEMPLATE-->
-                    [product_items]
-                    <!--END: ITEM_TEMPLATE-->
-                </div>
-                <!--END: accessories_items0-->
-            </div>
-            <!--END: accessories_0-->
-            <!--START: BREADCRUMBS-->
-            <div class="category_breadcrumbs sub-section">
-                <div class="header">
-                    <h3 class="page_heading">[product_Header-breadcrumbs]</h3>
-                </div>
-                <ul class="clearfix list-unstyled" role="navigation" aria-label="breadcrumbs">
-                    <!--START: CATEGORY_BREADCRUMBS-->
-                    [CATEGORY_BREADCRUMBS]
-                    <!--END: CATEGORY_BREADCRUMBS-->
-                </ul>
-            </div>
-            <!--END: BREADCRUMBS-->
         </form>
     </div>
 </section>
-
-<!--START: browsing_history-->
-<section class="browsing_historyBlock">
-	<div class="container">
-		<div class="header clearfix">
-			<h3 class="browsing-history-heading pull-left">[product_browsing-history-header]</h3>
-
-			<div class="history-disable-btn pull-right">
-				<button type="button" onclick="window.location.href = 'product.asp?itemid=[item_id]&delhist=0';" class="btn btn-default">
-					<!--START: browsing_history_enable-->
-					[product_browsing-history-disable]
-					<!--END: browsing_history_enable-->
-				</button>
-			</div>
-		</div>
-		<div class="product-carousel flexslider">
-			<ul class="product-items slides" data-ajax-browsinghistory>
-				<!--START: browsing_history_item-->
-				<li class="product-item [onsale_item]" data-catalogid="[catalog_id]" data-ajaxcart="1" data-addcart-callback="addcart_callback">
-					<div class="img">
-						<a href="product.asp?itemid=[catalog_id]">
-							<img src="assets/templates/common-core/images/spacer.gif" alt="[name]" class="img-responsive" />
-						</a>
-					</div>
-					<div class="name">
-						<a href="product.asp?itemid=[catalog_id]">[history_item_name]</a>
-					</div>
-
-						<div class="price">
-							<!--START: ITEMPRICE-->
-							<span class="regular-price">[ITEMPRICE]</span>
-							<!--END: ITEMPRICE-->
-							<!--START: SALEPRICE-->
-							<del class="regular-price">[ITEMPRICE]</del>
-							<span class="sale-price">[ITEMSALEPRICE]</span>
-							<span class="on-sale-badge">[product_sale]</span>
-							<!--END: SALEPRICE-->
-						</div>
-
-					<div class="action">
-						<a href="product.asp?itemid=[catalogid]&delhist=[catalog_id]" class="btn btn-default">
-							Clear
-						</a>
-					</div>
-				</li>
-				<!--END: browsing_history_item-->
-			</ul>
-		</div>
-	</div>
-</section>
-<!--END: browsing_history-->
-
-<!--START: requestsampleform-->
-<form id="frmSampleAdd" name="frmSampleAdd" method="post" action="add_cart.asp?item_id=[catalogid]&quick=1&action=requestSample">
-    <input type="hidden" name="item_id" value="[catalogid]" />
-    <input type="hidden" name="itemid" value="[id]" id="itemid" />
-    <input type="hidden" name="category_id" value="[catid]" />
-</form>
-<!--END: requestsampleform-->
 
 <!--START: CATEGORY_FOOTER-->
 <section class="category-footer">
@@ -1745,7 +1200,7 @@ function LoadMore()
     ReviewSortingChange(0, intOffSetNext);
     }
 
-<!--START: previouslybought_scripts-->
+//<!--START: previouslybought_scripts-->
 function checkPrevPurch(userId, caId) {
         
 		jQuery.ajax({
@@ -1768,8 +1223,33 @@ function checkPrevPurch(userId, caId) {
 
 		});
     }
-<!--END: previouslybought_scripts-->
+//<!--END: previouslybought_scripts-->
 // END: DFN-31
+
+    //Gift Card
+    var rangeSlider = function(){
+        var ex1value = jQuery("#et1").text();
+        var ex2value = jQuery("#et2").text();
+        jQuery("#rangeInput").attr("value", ex1value);
+        jQuery("#rangeInput").attr("min", ex1value);
+        jQuery("#rangeInput").attr("max", ex2value);
+        jQuery("#minVal").text(ex1value);
+        jQuery("#maxVal").text(ex2value);
+                
+        var slider = jQuery('.range-slider'),
+            range = jQuery('.range-slider__range'),
+            value = jQuery('.range-slider__value');
+        slider.each(function(){
+        value.each(function(){
+            var value = jQuery(".range-slider__range").attr('value');
+            jQuery(this).html("$" + value);
+        });
+        range.on('input.range-slider__range', function(){
+            jQuery(this).next(value).html("$" + this.value);
+        });
+        });
+    };
+    rangeSlider();
 </script>
 <!--END: template_scripts-->
 
@@ -1806,7 +1286,7 @@ function checkPrevPurch(userId, caId) {
 <style>
 .embed-responsive-bycustom 
 {
- padding-bottom: 85%;
+ padding-bottom: 85%;
 }
 .range-slider {
   margin: 30px 0 0 0%;
@@ -1874,6 +1354,7 @@ function checkPrevPurch(userId, caId) {
   margin-top: -10px;
 	float: right;
 }
+
 .range-slider__value:after {
   position: absolute;
   top: 8px;
