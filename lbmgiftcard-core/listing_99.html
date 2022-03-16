@@ -767,13 +767,14 @@
                         <!--START: giftcertificate_block-->
                         <div id="giftcertificate_block" class="sub-section">
                             <div class="header giftheading">
-                                <h4 class="page_heading">Add Delivery Details</h4>
+                                <h4 class="page_heading">Add Delivery Details <span class="required">*</span></h4>
                             </div>
                             <div class="input-to form-group">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <label class="option-help fullwidth" data-toggle="popover" data-content="Recipient's name" data-placement="right" data-trigger="focus">
-                                            <input type="text" size="23" name="gc_toname" class="form-control" placeholder="Recipient Name" />
+                                            <input type="text" size="23" name="gc_toname" id="gc_toname" class="form-control" placeholder="Recipient Name" />
+                                            <input type="hidden" name="required_field" value="gc_toname">
                                         </label>
                                     </div>
                                 </div>
@@ -782,7 +783,8 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <label class="option-help fullwidth" data-toggle="popover" data-content="Recipient's email address" data-placement="right" data-trigger="focus">
-                                            <input type="text" size="23" name="gc_toemail" class="form-control" placeholder="Recipient Email" />
+                                            <input type="text" size="23" name="gc_toemail" id="gc_toemail" class="form-control" placeholder="Recipient Email" />
+                                            <input type="hidden" name="required_field" value="gc_toemail">
                                         </label>
                                     </div>
                                 </div>
@@ -791,7 +793,8 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <label class="option-help fullwidth" data-toggle="popover" data-content="Sender's name" data-placement="right" data-trigger="focus">
-                                            <input type="text" size="23" name="gc_fromname" class="form-control" placeholder="Sender Name" />
+                                            <input type="text" size="23" name="gc_fromname" id="gc_fromname" class="form-control" placeholder="Sender Name" />
+                                            <input type="hidden" name="required_field" value="gc_fromname">
                                         </label>
                                     </div>
                                 </div>
@@ -1002,46 +1005,13 @@
                             </div>
                         </div>
                         <!--END: quantity-->
-                        <!--START: reward_redeem-->
-                        <div class="reward_redeem sub-section">
-                            <div id="divRewardRedeem">
-                                <input type="hidden" name="hdnRewardRedeemItem" id="hdnRewardRedeemItem" value="0" />
-                                <button type="button" class="btn btn-default btn-inverse" name="redeem" onclick="rewardRedeemItem(document.add);"><i class="icon-plus" role="presentation"></i> <span id="btnRedeemText">[product_redeem-item]</span></button>
-                            </div>
-                            <script type="text/javascript">
-                                function rewardRedeemItem(formx) {
-                                    formx.hdnRewardRedeemItem.value = "1";
-                                    check_and_add(formx);
-                                }
-                            </script>
-                        </div>
-                        <!--END: reward_redeem-->
 
                         <div class="addToCartBlock sub-section">
                             <div class="qtybox-addcart form-group">
                                 
                                 <!--START: addcartbutton-->
-                                <button type="button" id="Add" class="btn btn-default btn-inverse btn-addcart" onclick="check_and_add(document.add); setTimeout(openCart, 2000);">[product_addtocart]</button>
+                                <button type="button" id="Add" class="btn btn-default btn-inverse btn-addcart" onclick="check_and_add_custom_gc(document.add);">[product_addtocart]</button>
                                 <!--END: addcartbutton-->
-                                <!--START: replaceRecurItem-->
-                                <button type="button" id="replaceRecur" class="btn" onclick="ask_check_and_add(document.add,1,'[replaceitemname]');"><i class="icon-basket" role="presentation"></i> [recurringorders_replace-button]</button>
-                                <input type="hidden" name="hdnRecurringChangeItem" id="hdnRecurringChangeItem" value="1" />
-                                <input type="hidden" name="hdnRecurringChangeFrom" id="hdnRecurringChangeFrom" value="[replaceitemname]" />
-                                <input type="hidden" name="hdnRecurringChangeTo" id="hdnRecurringChangeTo" value="[replaceitemname2]" />
-                                <!--END: replaceRecurItem-->
-                                <!--START: samplerequest-->
-                                <div class="samplerequest">
-                                    <button type="button" id="AddSample" class="btn btn-default addsample-btn" onclick="add_sample();"><i class="icon-basket" role="presentation"></i> [product_sample-request] - [currency][sample_price]</button>
-                                    <input type="hidden" name="sample_request" id="sample_request" />
-                                    <script type="text/javascript">
-                                        function add_sample() {
-                                            if (confirm('[product_request-sample-confirm]')) {
-                                                document.frmSampleAdd.submit();
-                                            }
-                                        }
-                                    </script>
-                                </div>
-                                <!--END: samplerequest-->
                                 <!--START: stripe_applepay_button-->
                                 <div class="stripe_applepay">
                                     [stripeApplePay]
@@ -1130,6 +1100,29 @@
 <!--END: recaptcharobot_js-->
 
 <script>
+function check_and_add_custom_gc(formx)
+{
+    //perform preliminary validation - customized for GC shops
+	var reqOption = validateReqOption(formx);
+
+	if (reqOption != null) {
+		//alert("Please select all required options.");
+		reqOptionBar.alert('Please select all required options.');
+		varx1 = '[name="' + reqOption.name + '"]';
+		jQuery(varx1).closest('.opt-regular').addClass('option-required');
+		return;
+	}
+
+    var elemGCToEmail = document.getElementById("gc_toemail");
+    if (elemGCToEmail !== null && !validateEmail(elemGCToEmail.value))
+    {
+		reqOptionBar.alert('Invalid Recipient Email.');
+		return;        
+    }
+
+    check_and_add(formx);
+}
+
 var OriginalImage = jQuery('#listing_main_image_link').attr('href') ?? '';
 function SelectSwatch(id) {
     var imagepath = jQuery('#swatch-image-' + id).val();
