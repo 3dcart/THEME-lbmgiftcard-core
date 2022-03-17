@@ -1123,7 +1123,7 @@ function check_and_add_custom_gc(formx)
     check_and_add(formx);
 }
 
-var OriginalImage = jQuery('#listing_main_image_link').attr('href') ?? '';
+var OriginalImage = jQuery('#listing_main_image_link').attr('href') == ''? '' : jQuery('#listing_main_image_link').attr('href');
 function SelectSwatch(id) {
     var imagepath = jQuery('#swatch-image-' + id).val();
     if (imagepath == '') imagepath = OriginalImage;
