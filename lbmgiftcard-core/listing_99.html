@@ -1243,6 +1243,160 @@ function checkPrevPurch(userId, caId) {
         });
     };
     rangeSlider();
+	
+function validateValues(what, alerting, form_id) {
+	var valid = true;
+	var fieldnamemod = new String();
+	var fieldvaluemod = new String();
+	var checkBoxes = false;
+	var checkboxChecked = false;
+	var price= 0;
+	var radioButtons = false;
+	var radioChecked = false;
+	var imagename= new Image;
+	var itemid;
+	var customTag;
+    var isValidateExecuted = false;
+    var intRewardsPointsOriginal = 0;
+    var intRewardsPointsBundleOption = 0;
+    var strRewardsButtonText = '';
+
+	stocknum = '';
+
+    if (what == null) return false;
+
+	if(what.std_price==null) {
+	    //'Item has no options.
+	}
+	else {
+		price =what.std_price.value; //document.add.std_price.value;
+
+        var isRewardProduct = (document.add.reward_product != undefined && document.add.reward_product.value > 0);
+        if (isRewardProduct) {
+            intRewardsPointsOriginal = eval(document.add.reward_product.value)
+            strRewardsButtonText = document.add.reward_text.value;
+        }
+
+		if (price == 0 && form_id != null && form_id != undefined)
+			return;
+
+		if (what.itemid != null)
+			itemid=what.itemid.value;
+		else
+			itemid="";
+
+		listing_elemLenght = what.elements.length;
+		for (var i = 0, j = listing_elemLenght; i < j; i++) {
+			myType = what.elements[i].type;
+
+			try {
+				customTag = what.elements[i].getAttribute("customoption"); 
+			}
+			catch (e) { customTag = null; }
+
+			if(myType != null && myType != undefined && customTag == null) {
+                fieldnamemod = what.elements[i].name;
+			    if (fieldnamemod != '' && fieldnamemod != 'recipientselect' && fieldnamemod != 'reminder' && fieldnamemod != 'qty-0' && fieldnamemod != 'recurring_frequency' && fieldnamemod != 'item_id') {
+					var field_array;
+
+			        // IMAGE dropdown's
+			        //alert(fieldnamemod + fieldnamemod.indexOf("di_"));
+                    if (fieldnamemod.indexOf("di_") > -1 || fieldnamemod.indexOf("mi_") > -1) {
+						// Have its own image per drop down
+						SetSrc(what, "img_"+fieldnamemod, GetValue(what, "image_"+what.elements[i].options[what.elements[i].selectedIndex].value, form_id), form_id);
+			            //don't process the price, because it'll be considered below when the dropdown option is parsed.
+                    }
+
+					if (myType == 'radio' && fieldnamemod != 'wishlist-optListType') {
+						radioButtons = true;
+						if (what.elements[i].checked) {
+                            radioChecked = true;
+                            percent = GetValue(what, "pricep_" + what.elements[i].value, form_id);
+                            if (percent !== undefined) {
+                                percentValue = eval(percent) / 100 * eval(price);
+                                price = eval(price) + percentValue;
+                            }
+                            else {
+                                price = eval(price) + eval(GetValue(what, "price_" + what.elements[i].value, form_id));
+                            }							
+                            itemid = (itemid) + GetValue(what, "OptID_" + what.elements[i].value, form_id);
+
+                            if(stocknum == '')
+                                stocknum = what.elements[i].value + "#";
+
+							if(!isValidateExecuted && isRewardProduct && (eval(GetValue(what, "reward_" + what.elements[i].value)) != undefined))
+							    intRewardsPointsBundleOption = intRewardsPointsBundleOption + eval(GetValue(what, "reward_" + what.elements[i].value));
+						}
+						recalculateRewardPoints(price);
+					}
+					if (myType == 'checkbox') {
+						checkBoxes = true;
+						if (what.elements[i].checked) {
+							if (fieldnamemod>"")
+								price=eval(price) +eval(GetValue(what, "price_" +fieldnamemod, form_id));
+							itemid = (itemid) +GetValue(what, "OptID_" +fieldnamemod, form_id);
+						}
+						recalculateRewardPoints(price);
+                    }
+
+					if (myType == 'hidden' || myType == 'password' || myType == 'text' || myType == 'textarea')
+                        if (what.elements[i].value == what.elements[i].defaultValue) valid = false;
+
+
+                    //Mixed Pack Recalculation
+                    if (what.elements[i].getAttribute("data-feature_extra-price") != undefined && what.elements[i].getAttribute("data-feature_extra-price") != null) {
+                        form_id = null;
+                        if (!isNaN(what.elements[i].value)) {
+                            mp_extra = (eval(what.elements[i].value) * eval(what.elements[i].getAttribute("data-feature_extra-price")));
+                            if (!isNaN(mp_extra))
+                                if (mp_extra > 0)
+                                    price = eval(price) + mp_extra;
+                        }
+                    }
+
+					
+					if (myType == 'select-one' || myType == 'select-multiple') {
+                        if (what.elements[i].name.indexOf("otf_") < 0 && what.elements[i].options[what.elements[i].selectedIndex].value > "") {
+                            fieldvaluemod = what.elements[i].options[what.elements[i].selectedIndex].value;
+                            stocknum = stocknum + fieldvaluemod + "#";
+                            percent = GetValue(what, "pricep_" + what.elements[i].options[what.elements[i].selectedIndex].value);
+                            if (percent !== undefined) {
+                                percentValue = eval(percent) / 100 * eval(price);
+                                price = eval(price) + percentValue;
+                            }
+                            else {
+                                price = eval(price) + eval(GetValue(what, "price_" + what.elements[i].options[what.elements[i].selectedIndex].value));
+                            }
+                            itemid=itemid+ '' + GetValue(what, "OptID_" +what.elements[i].options[what.elements[i].selectedIndex].value);
+                            if (!isValidateExecuted && isRewardProduct && (eval(GetValue(what, "reward_" +what.elements[i].value)) != undefined))
+                                intRewardsPointsBundleOption = intRewardsPointsBundleOption +eval(GetValue(what, "reward_" +what.elements[i].value));
+                        }
+                        recalculateRewardPoints(price);
+                    }
+				}
+			}
+		}
+		if (isRewardProduct) {
+			if (!isValidateExecuted) {
+				strRewardsButtonText = strRewardsButtonText.replace("[reward_redeem]", intRewardsPointsOriginal +intRewardsPointsBundleOption);
+                if (document.getElementById("btnRedeemText") != null) {
+                    document.getElementById("btnRedeemText").innerHTML = strRewardsButtonText;
+                }
+
+                isValidateExecuted = true;
+		    }
+		}
+		if ((checkBoxes && !checkboxChecked) || (radioButtons && !radioChecked)) valid = false;
+
+		changeprice(price, form_id);
+		changeid(itemid);
+		if (alerting==1) {
+            return check_stock(what, stocknum);
+		}
+			    //return valid;
+	}
+}
+
 </script>
 <!--END: template_scripts-->
 
