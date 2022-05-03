@@ -13,7 +13,9 @@ body, #o-wrapper {
 footer {
 	flex-shrink: 0;
 }
-
+.account_login.account_login1.checkout-section {
+    display: none !important;
+}
 body {
     font-family: 'sofia-pro', sans-serif;
     color: #000;
