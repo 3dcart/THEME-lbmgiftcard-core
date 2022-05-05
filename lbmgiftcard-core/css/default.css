@@ -14,7 +14,8 @@ footer {
 	flex-shrink: 0;
 }
 .account_login.account_login1.checkout-section,
-#checkout-left .createNewAccount > .row:last-child {
+#checkout-left .createNewAccount > .row:last-child,
+#billing_info > .row > .chkField:last-child{
     display: none !important;
 }
 body {
