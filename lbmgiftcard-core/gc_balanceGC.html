@@ -38,7 +38,7 @@
 				jQuery("#spnNbr").text(data.Nbr);
 				jQuery("#spnStat").text(data.Stat);
 				jQuery("#spnBal").text("$" + data.Bal);
-				jQuery("#spnOrigDt").text(getDateWithFormat(data.OrigDt));
+				jQuery("#spnOrigDt").text(getDateWithFormat(data.OrigDt + ' 00:00:00'));
 				jQuery.each(data.Txs, function (i, val) {
 					var newDiv = jQuery(`<div id="activityResult` + i + `" class="activityResult clearfix"> <div class="col-sm-4"> <div class="colDate atCol"></div> </div> <div class="col-sm-4"> <div class="colUsed atCol"></div> </div> <div class="col-sm-4"> <div class="colAmount atCol"></div> </div> </div>`);
 					jQuery("#activityResults").append(newDiv)
