@@ -374,3 +374,11 @@ jQuery('.addToCartBlock button#Add').click(function (e) {
 	e.preventDefault();    
     localStorage.setItem("cart_modal", "show");        
 }); 
+
+function deleteGCReload(txtQtd) {
+    if (jQuery(`#${txtQtd}`)) {
+        jQuery(`#${txtQtd}`).val(0);
+        return true;
+    } else
+        return false;
+}

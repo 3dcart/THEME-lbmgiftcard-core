@@ -25,13 +25,20 @@
 		jQuery("#noresults").addClass("hide");
 		jQuery("#activityResults").empty();
 
+		jQuery("#giftCardAmount").removeClass("hide");
+		jQuery("#giftCardProduct").addClass("hide");		
+		jQuery("#checkoutBtns").addClass("hide");
+		jQuery("#addFunds").addClass("hide");
+
+		verifyCheckoutButton();
+
 		jQuery.post("gc_balance.asp", "gcnumber=" + gcn + "&g-recaptcha-response=" + jQuery('#GCrecaptchaRobot textarea').val(), function (data) {
 			if (data.success) {
 				jQuery("#spnOrigAmt").text("$" + data.OrigAmt);
 				jQuery("#spnNbr").text(data.Nbr);
 				jQuery("#spnStat").text(data.Stat);
 				jQuery("#spnBal").text("$" + data.Bal);
-				jQuery("#spnOrigDt").text(getDateWithFormat(data.OrigDt));
+				jQuery("#spnOrigDt").text(getDateWithFormat(data.OrigDt + ' 00:00:00'));
 				jQuery.each(data.Txs, function (i, val) {
 					var newDiv = jQuery(`<div id="activityResult` + i + `" class="activityResult clearfix"> <div class="col-sm-4"> <div class="colDate atCol"></div> </div> <div class="col-sm-4"> <div class="colUsed atCol"></div> </div> <div class="col-sm-4"> <div class="colAmount atCol"></div> </div> </div>`);
 					jQuery("#activityResults").append(newDiv)
@@ -58,9 +65,11 @@
 	}
 
 </script>
+
 <section id="gcView" class="page-content">
 	<div class="container">
 		<!--START: gc-->
+		<form enctype='multipart/form-data' method='post' action='add_cart.asp' name='add' id='add'>
 		<div class="gcViewBlock">
 
 			<div id="checkBalanceForm" class="checkBalance">
@@ -68,7 +77,7 @@
 				<h3>Enter your gift card code to see your current balance and activity</h3>
 				<div class="checkBalnceHolder">
 					<div class="gc-field">	
-						<input type="text" size="20" name="gcnumber" id="gcnumber" value="" placeholder="Gift Card Code" maxlength="30" class="txtBoxStyle form-control" />
+						<input type="" size="20" name="gcnumber" id="gcnumber" value="" placeholder="Gift Card Code" maxlength="30" class="txtBoxStyle form-control" />
 					</div>
 					<div class="gc-field">
 						<button type="button" onclick="this.disabled = true; CheckCaptcha();" class="btn btn-default btn-inverse gc-field-submit">Check Balance</button>
@@ -87,7 +96,8 @@
 				<div class="balanceHolder">
 					<div class="balanceDetails clearfix">
 						<div class="col-sm-6 text-left">
-							<div class="product"><b>Gift Card Amount: </b><span id="spnOrigAmt"></span></div>
+							<div class="product" id="giftCardAmount"><b>Gift Card Amount: </b><span id="spnOrigAmt"></span></div>
+							<div class="product" id="giftCardProduct"><b>Product: </b><span>Digital Gift Card</span></div>
 							<div class="product"><b>Status: </b><span id="spnStat"></span></div>
 						</div>
 						<div class="col-sm-6 text-right">
@@ -95,16 +105,45 @@
 							<div class="product"><b>Issued Date: </b><span id="spnOrigDt"></span></div>
 						</div>
 					</div>
-					<div class="balanceAmount text-center">
+					<div class="balanceAmount text-center" id="balanceAmount">
 						<div class="balanceTitle">Balance:</div>
 						<div class="balance" id="spnBal"></div>
 					</div>
-					<div class="balanceBtns row">
-						<div class="col-sm-6">
+					<div class="addFunds text-center" id="addFunds">
+						<div class="addFundsHeader">Choose Amount</div>
+						
+						<div class="listing-page addFundsContent" id="addFundsContent">
+						</div>
+
+						<div id="addFundsSelectedAmount">
+							<div class="addFundsTitle">Reload Amount:</div>
+							<div class="balance" id="addFundsAmount">$5</div>
+						</div>
+
+						<div id="addFundsLoading"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+
+					</div>
+					<div class="balanceBtns row" id="balanceBtns">
+						<div class="col-sm-4">
+							<!-- <a href="" class="btn btn-default btn-inverse gc-field-submit" id="showAddFunds">$ Add Funds</a> -->
+							<input type="button" value="$ Add Funds" class="btn btn-default btn-inverse gc-field-submit" id="showAddFunds">
+						</div>
+						<div class="col-sm-4">
 							<a href="" class="btn btn-default btn-inverse gc-field-submit" id="showActivity">Show Activity</a>
 						</div>
-						<div class="col-sm-6">
+						<div class="col-sm-4">
 							<a href="" class="btn btn-default btn-inverse gc-field-submit" id="NewSearch">Check Another Card</a>
+						</div>
+					</div>
+					<div class="checkoutBtns row" id="checkoutBtns">
+						<div class="col-sm-4">
+							<div class="btn btn-default btn-inverse gc-field-submit" id="NewSearch1">Check Another Card</div>
+						</div>
+						<div class="col-sm-4">
+							<a href="giftcard.html" class="btn btn-default btn-inverse gc-field-submit">View Gift Card Store</a>
+						</div>
+						<div class="col-sm-4">
+							<input type="submit" name="Submit" value="Proceed to checkout" class="btn btn-default btn-inverse gc-field-submit" id="showCheckout">
 						</div>
 					</div>
 					<div class="activity" id="activity">
@@ -127,14 +166,18 @@
 							</div>
 						</div>
 					</div>
+					
 				</div>
 			</div>
 
 		</div>
+		</form>
 		<!--END: gc-->
 		<div class="clear"></div>
 	</div>
 </section>
+
+
 <div id="GCrecaptchaRobot" class="recaptchaRobot" 
 data-sitekey="[recaptcha_key]"
 data-size="[recaptcha_robot_size]"
@@ -145,6 +188,7 @@ data-callback="CheckBalance">
 
 <!--START: template_styles-->
 <link rel="stylesheet" href="/assets/templates/common-core/css/gc_view.css" type="text/css" media="screen" />
+
 <style>
 .checkBalance {
     text-align: center;
@@ -183,6 +227,7 @@ input.txtBoxStyle.form-control {
 }
 .balanceDetails {
     margin: 20px 0;
+	height: 62px;
 }
 .balanceTitle {
     font-size: 20px;
@@ -194,14 +239,43 @@ input.txtBoxStyle.form-control {
 .balance {
     font-size: 64px;
     font-weight: 500;
-    line-height: 62px;
+    height: 62px;
 }
-	.balanceBtns a{
+.balanceBtns a{
     width: 100%;
     border-radius: 3px;
     text-transform: capitalize;
     font-weight: 400;
 }
+
+.addFunds{
+	margin: 50px 0;
+}
+.addFundsHeader{
+	font-size: 35px;
+    font-weight: 700;
+}
+.addFundsHeader::after{
+	content: '*';
+    color: red;
+}
+.addFundsTitle{
+	font-size: 20px;
+    font-weight: 400;
+}
+
+.addFundsContent{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.checkoutBtns div.btn, .checkoutBtns a, .checkoutBtns input.btn, .balanceBtns input.btn{
+    width: 100%;
+    border-radius: 3px;
+    text-transform: capitalize;
+    font-weight: 400;
+}
+
 .activity {
     margin: 40px 0;
 }
@@ -225,10 +299,15 @@ input.txtBoxStyle.form-control {
 		.balanceDetails .text-right {
     text-align: left;
 }
-		.balanceBtns a {
+.balanceBtns a {
     margin-bottom: 10px;
 }
-	.activityTitles {
+
+.checkoutBtns a {
+	margin-bottom: 10px;
+}
+
+.activityTitles {
     display: none;
 }
 	.atCol {
@@ -250,10 +329,54 @@ input.txtBoxStyle.form-control {
 			float: left;
 		}
 	}
+
+	.listing-page .radio-format>.radio-option>input {
+		padding: 15px 15px;
+		display: inline-block;
+		background: #fff;
+	}
+
+	.specialamount{
+		border: 0px;
+		height: 43px;
+	}
+
 </style>
 <!--END: template_styles-->
 <!--START: template_scripts-->
+
+<script type="text/javascript" src="/assets/templates/common-core/lib/utilities.js"></script>
+<script type="text/javascript" src="/assets/templates/common-core/lib/flexslider/jquery.flexslider-min.js"></script>
 <script>
+    var mzOptions = {};
+    mzOptions = {
+        onUpdate: function() {
+            jQuery('#imagecaptiont').text(jQuery(arguments[2]).attr('title'));
+        }
+    };
+</script>
+<script type="text/javascript" src="/assets/templates/common-core/lib/magiczoomplus/magiczoomplus.js"></script>
+<script type="text/javascript" src="/assets/templates/common-core/lib/responsiveTabs/js/jquery.responsiveTabs.min.js"></script>
+<script type="text/javascript" src="/assets/templates/common-core/js/listing.js"></script>
+<!--START: qaScript-->
+<script type="text/javascript" src="/assets/templates/common-core/js/listing-qa.js"></script>
+<!--END: qaScript-->
+
+<!--START: reviewsScript-->
+<script type="text/javascript" src="/assets/templates/common-core/js/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="/assets/templates/common-core/js/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="/assets/templates/common-core/js/jquery.fileupload.js"></script>
+<script type="text/javascript" src="/assets/templates/common-core/js/listing-reviews.js"></script>
+<!--END: reviewsScript-->
+
+<!--START: counterScript-->
+<script type="text/javascript" src="assets/templates/common-core/lib/countdown.js"></script>
+<!--END: counterScript-->
+
+<script>
+
+	var selectedOptioId = 0;
+
 	jQuery("#showActivity").click(function(e){
 		e.preventDefault();
 		jQuery("#activity").slideToggle();
@@ -261,16 +384,183 @@ input.txtBoxStyle.form-control {
 			  return text === "Show Activity" ? "Hide Activity" : "Show Activity";
 		  })
 	});
+
+	jQuery("#showAddFunds").click(function(e){
+		e.preventDefault();
+		jQuery("#addFunds").removeClass("hide");
+		jQuery("#checkoutBtns").removeClass("hide");
+		jQuery("#balanceBtns").addClass("hide");	
+		
+		jQuery("#activity").hide();
+
+		jQuery("#balanceAmount").addClass("hide");			
+		jQuery("#addFundsSelectedAmount").addClass("hide");	
+		jQuery("#addFundsContent").addClass("hide");
+		jQuery("#addFundsloading").removeClass("hide");	
+
+		jQuery("#giftCardAmount").addClass("hide");
+		jQuery("#giftCardProduct").removeClass("hide");
+
+		loadGiftCardOptions();
+	});
+
+	jQuery("#NewSearch1").click(function(e){
+		e.preventDefault();
+		newSearchForm();
+	});
 	
 	jQuery("#NewSearch").click(function(e){
 		e.preventDefault();
+		newSearchForm();
+	});
+
+	function newSearchForm(){
+		jQuery("#balanceBtns").removeClass("hide");
+		jQuery("#balanceAmount").removeClass("hide");
 		jQuery("#checkBalanceForm").removeClass("hide");
 		jQuery("#divBalanceBlock").addClass("hide");
 		jQuery("#noresults").addClass("hide");
 		jQuery("#activity").hide();
 		jQuery("#showActivity").text("Show Activity");
 		jQuery("#activityResults").empty();
-	});
+
+		jQuery("#addFunds").addClass("hide");
+		jQuery("#checkoutBtns").addClass("hide");
+
+		jQuery("#checkoutBtns").addClass("hide");
+		jQuery("#addFunds").addClass("hide");
+		
+		jQuery("#giftCardAmount").removeClass("hide");
+		jQuery("#giftCardProduct").addClass("hide");
+
+	}
+
+	function verifyCheckoutButton(){
+
+		var blockCheckout = false;
+
+		jQuery.ajax({
+			url: `./ajax.asp?action=checkgcinthecart&gcCode=${jQuery("#gcnumber").val()}`,
+			dataType: 'json',
+			data: '',
+			type: 'GET',
+			async: false,
+			cache: false,
+			success: function (strResult) {
+				blockCheckout = strResult.giftCardInTheCart;
+			},
+			error: function (errObject, strResult) {
+				blockCheckout = true;
+			},
+			complete: function () {
+				if (blockCheckout){
+					jQuery('#showAddFunds').prop("disabled", true);		
+					jQuery('#showAddFunds').prop("title", "This card is already in the cart.");		
+				}else{
+					jQuery('#showAddFunds').prop("disabled", false);		
+					jQuery('#showAddFunds').prop("title", "");	
+				}
+
+			}
+		});
+
+	}
+
+	function loadGiftCardOptions(){
+
+		jQuery.ajax({
+			url: `./ajax.asp?action=loadGCOptions&gcCode=${jQuery("#gcnumber").val()}`,
+			dataType: 'html',
+			data: '',
+			type: 'GET',
+			async: false,
+			cache: false,
+			success: function (strResult) {
+
+
+				jQuery('#showCheckout').prop("disabled", false);	
+
+				jQuery('#addFundsContent').empty();
+				jQuery('#addFundsContent').append(strResult);
+
+				jQuery("#addFundsSelectedAmount").removeClass("hide");	
+				jQuery("#addFundsContent").removeClass("hide");				
+				jQuery("#addFundsloading").addClass("hide");	
+				
+				jQuery('.opt-label').empty();
+
+				var firstAmountOptionId = selectFirstAmountOption();
+				selectOption(firstAmountOptionId);
+
+				selectFirstDesignOption();
+
+				selectAmountOption(jQuery(".opt-field .radio-format:first-child label")[0]);
+								
+			},
+			error: function (errObject, strResult) {
+				console.log('Error', strResult)
+				return false;
+			}
+		});
+
+	}
+
+	function selectFirstDesignOption(){
+		return selectFirstOptionByType('radio-format');
+	}
+
+	function selectFirstAmountOption(){
+		return selectFirstOptionByType('swatch-format');
+	}
+
+	function selectFirstOptionByType(optionType){		
+		var firstOptionId = jQuery(`.opt-field .${optionType}:first-child input`)[0].id;
+		jQuery(`#${firstOptionId}`).prop("checked", true);
+		return firstOptionId;
+	}
+
+	function selectAmountOption(optionLabelItem){
+		jQuery('#addFundsAmount').empty();
+		jQuery('#addFundsAmount').append(optionLabelItem.innerText);	
+
+		if(jQuery('#specialamount'))
+			jQuery('#specialamount').val('');
+			
+		selectedOptioId = optionLabelItem.id
+	}
+
+	function adjustCustomAmountField(){
+
+		$("#specialamount").keyup(function() {
+
+			var max = parseInt(jQuery("#et2").text());          	
+
+			if (jQuery(this).val() > max)
+			{
+				jQuery(this).val(max);
+			}
+		  
+		  	jQuery('#addFundsAmount').empty();
+			jQuery('#addFundsAmount').append(`$${jQuery(this).val()}`);
+
+        }); 
+
+		$("#specialamount").blur(function() {
+          
+			var min = parseInt(jQuery("#et1").text());
+			
+			if (jQuery(this).val() < min)
+			{
+			jQuery(this).val(min);
+			} 
+		
+			jQuery('#addFundsAmount').empty();
+		  	jQuery('#addFundsAmount').append(`$${jQuery(this).val()}`);
+
+	  }); 
+
+	}
+
 </script>
 <script>
 	var CaptchaCallback = function () {
