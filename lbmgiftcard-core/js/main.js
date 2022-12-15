@@ -52,9 +52,9 @@ function CheckCartOpen(){
 
   let isOpenCart = params.oc;
 
-  if (isOpenCart != null){
-    jQuery('#c-button--push-right').trigger('click'); 
-  }
+    if (isOpenCart != null && _3d_cart.itemsum > 0) {
+        jQuery('#c-button--push-right').trigger('click');
+    }
 
 }
 
