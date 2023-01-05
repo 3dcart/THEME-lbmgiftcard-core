@@ -355,6 +355,19 @@ section.category-products {
     float: left;
 }
 
+.minicart-items {
+    border-radius: 100%;
+    background-color: #9e0b0f;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 5px;
+    top: -1px;
+    color: #fff !important;
+    line-height: 21px;
+    text-align: center;
+}
+
 span.cart-title {
     font-size: 12px;
     line-height: 15px;
