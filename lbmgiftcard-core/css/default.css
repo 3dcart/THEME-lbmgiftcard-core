@@ -368,6 +368,12 @@ section.category-products {
     text-align: center;
 }
 
+.minicart-items p {
+    font-weight: 300;
+    font-size: 15px;
+    margin-top: -2px;
+}
+
 span.cart-title {
     font-size: 12px;
     line-height: 15px;
