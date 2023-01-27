@@ -106,7 +106,10 @@ section.category-products {
 #category .product-items .product-item {
     width: 100%;
 }
+				
+					 
 }
+ 
 
 @media (min-width: 1200px) {
     .container {
@@ -351,6 +354,25 @@ section.category-products {
 .minicart .cart-details {
     display: block;
     float: left;
+}
+
+.minicart-items {
+    border-radius: 100%;
+    background-color: #9e0b0f;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 5px;
+    top: -1px;
+    color: #fff !important;
+    line-height: 21px;
+    text-align: center;
+}
+
+.minicart-items p {
+    font-weight: 300;
+    font-size: 15px;
+    margin-top: -2px;
 }
 
 span.cart-title {
@@ -1409,6 +1431,7 @@ label.gc-label {
 .c-menu--slide-bottom .c-menu__items,
 .c-menu--push-top .c-menu__items,
 .c-menu--push-bottom .c-menu__items {
+
   display: inline-block;
   text-align: center;
 }
