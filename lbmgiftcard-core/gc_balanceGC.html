@@ -80,7 +80,7 @@
 						<input type="" size="20" name="gcnumber" id="gcnumber" value="" placeholder="Gift Card Code" maxlength="30" class="txtBoxStyle form-control" />
 					</div>
 					<div class="gc-field">
-						<button type="button" onclick="this.disabled = true; CheckCaptcha();" class="btn btn-default btn-inverse gc-field-submit">Check Balance</button>
+						<button id="btnCheckBalance" type="button" onclick="this.disabled = true; CheckCaptcha();" class="btn btn-default btn-inverse gc-field-submit">Check Balance</button>
 					</div>
 				</div>
 			</div>
@@ -559,7 +559,16 @@ input.txtBoxStyle.form-control {
 
 	  }); 
 
-	}
+    }
+
+    var input = document.getElementById("gcnumber");
+
+    input.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("btnCheckBalance").click();
+        }
+    });
 
 </script>
 <script>
