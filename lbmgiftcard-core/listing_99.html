@@ -579,7 +579,7 @@
                             <!--START: extra_field_5-->
                             <div class="extra_field">
                                 <strong>[product_extrafield5]</strong>
-                                <span class="info">[extra_field_5]</span>
+                                <span class="info" id="et5">[extra_field_5]</span>
                             </div>
                             <!--END: extra_field_5-->
                         </div>
@@ -1223,25 +1223,36 @@ function checkPrevPurch(userId, caId) {
 
     //Gift Card
     var rangeSlider = function(){
-        var ex1value = jQuery("#et1").text();
-        var ex2value = jQuery("#et2").text();
-        jQuery("#rangeInput").attr("value", ex1value);
-        jQuery("#rangeInput").attr("min", ex1value);
-        jQuery("#rangeInput").attr("max", ex2value);
-        jQuery("#minVal").text(ex1value);
-        jQuery("#maxVal").text(ex2value);
+        var min = jQuery("#et1").text(); // Minimum
+        var max = jQuery("#et2").text(); // Maximum
+        var step = jQuery("#et5").text(); // Step size
+       
+        if(step){ // if step is set
+            min = Math.max(min, step);
+            if(min % step != 0){ // if the min is not divisible by the step we have to "raise" it up to the next step
+                min =  Math.ceil(min / step) * step;
+            }
+            max -= max % step; // make sure max is divisible by step
+            jQuery("#rangeInput").attr("step", step); // set step attribute on input
+        }
+      
+        jQuery("#rangeInput").attr("value", min);
+        jQuery("#rangeInput").attr("min", min);
+        jQuery("#rangeInput").attr("max", max);
+        jQuery("#minVal").text(min);
+        jQuery("#maxVal").text(max);
                 
         var slider = jQuery('.range-slider'),
             range = jQuery('.range-slider__range'),
             value = jQuery('.range-slider__value');
         slider.each(function(){
-        value.each(function(){
-            var value = jQuery(".range-slider__range").attr('value');
-            jQuery(this).html("$" + value);
-        });
-        range.on('input.range-slider__range', function(){
-            jQuery(this).next(value).html("$" + this.value);
-        });
+            value.each(function(){
+                var value = jQuery(".range-slider__range").attr('value');
+                jQuery(this).html("$" + value);
+            });
+            range.on('input.range-slider__range', function(){
+                jQuery(this).next(value).html("$" + this.value);
+            });
         });
     };
     rangeSlider();
