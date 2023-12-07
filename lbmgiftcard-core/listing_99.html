@@ -1132,10 +1132,11 @@ function SelectSwatch(id) {
     if (imagepath != '') {
 
         if (jQuery('#listing_main_image_link').length > 0) {
-            if (jQuery(".MagicZoomPlus").length > 0) MagicZoom.stop();
             jQuery('#listing_main_image_link').attr('href', imagepath);
             jQuery('#large').attr('src', 'thumbnail.asp?file=' + imagepath + '&maxx=[image_medium_w]&maxy=0');
-            if (jQuery(".MagicZoomPlus").length > 0) MagicZoom.start('listing_main_image_link');
+            if (jQuery(".MagicZoomPlus").length > 0) {
+                MagicZoom.update('listing_main_image_link', imagepath, 'thumbnail.asp?file=' + imagepath + '&maxx=[image_medium_w]&maxy=0')
+            }
         }
         else {
             jQuery('<div id="main-image" class="main-image text-center"><a href="' + imagepath + '" id="listing_main_image_link"><img src="thumbnail.asp?file=' + imagepath + '&maxx=[image_medium_w]&maxy=0" id="large" class="img-responsive" alt="[imagecaption1]" /></a></div>').insertBefore('#addl-images');
