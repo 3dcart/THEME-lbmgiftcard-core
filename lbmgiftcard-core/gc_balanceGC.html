@@ -34,6 +34,21 @@
 
 		jQuery.post("gc_balance.asp", "gcnumber=" + gcn + "&g-recaptcha-response=" + jQuery('#GCrecaptchaRobot textarea').val(), function (data) {
 			if (data.success) {
+
+				if(data.isGivex != undefined && data.isGivex == true){
+					jQuery("#giftCardDetails1").addClass("hide");
+					jQuery("#giftCardOriginalDate").addClass("hide");
+					jQuery("#showActivityButton").addClass("hide");
+					jQuery("#giftCardDetails2").removeClass("text-right");
+					jQuery("#giftCardDetails2").addClass("text-left");
+
+					jQuery("#showAddFundsButton").removeClass("col-sm-4");
+					jQuery("#showAddFundsButton").addClass("col-sm-6");
+
+					jQuery("#showNewCheckButton").removeClass("col-sm-4");
+					jQuery("#showNewCheckButton").addClass("col-sm-6");
+				}
+
 				jQuery("#spnOrigAmt").text("$" + data.OrigAmt);
 				jQuery("#spnNbr").text(data.Nbr);
 				jQuery("#spnStat").text(data.Stat);
@@ -95,14 +110,14 @@
 				<h2>Gift Card Balance</h2>
 				<div class="balanceHolder">
 					<div class="balanceDetails clearfix">
-						<div class="col-sm-6 text-left">
+						<div class="col-sm-6 text-left" id="giftCardDetails1">
 							<div class="product" id="giftCardAmount"><b>Gift Card Amount: </b><span id="spnOrigAmt"></span></div>
 							<div class="product" id="giftCardProduct"><b>Product: </b><span>Digital Gift Card</span></div>
-							<div class="product"><b>Status: </b><span id="spnStat"></span></div>
+							<div class="product" id="giftCardStatus"><b>Status: </b><span id="spnStat"></span></div>
 						</div>
-						<div class="col-sm-6 text-right">
-							<div class="product"><b>Card Number: </b><span id="spnNbr"></span></div>
-							<div class="product"><b>Issued Date: </b><span id="spnOrigDt"></span></div>
+						<div class="col-sm-6 text-right" id="giftCardDetails2">
+							<div class="product" id="giftCardNumber"><b>Card Number: </b><span id="spnNbr"></span></div>
+							<div class="product" id="giftCardOriginalDate"><b>Issued Date: </b><span id="spnOrigDt"></span></div>
 						</div>
 					</div>
 					<div class="balanceAmount text-center" id="balanceAmount">
@@ -124,14 +139,14 @@
 
 					</div>
 					<div class="balanceBtns row" id="balanceBtns">
-						<div class="col-sm-4">
+						<div class="col-sm-4" id="showAddFundsButton">
 							<!-- <a href="" class="btn btn-default btn-inverse gc-field-submit" id="showAddFunds">$ Add Funds</a> -->
 							<input type="button" value="$ Add Funds" class="btn btn-default btn-inverse gc-field-submit" id="showAddFunds">
 						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-4" id="showActivityButton">
 							<a href="" class="btn btn-default btn-inverse gc-field-submit" id="showActivity">Show Activity</a>
 						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-4" id="showNewCheckButton">
 							<a href="" class="btn btn-default btn-inverse gc-field-submit" id="NewSearch">Check Another Card</a>
 						</div>
 					</div>
