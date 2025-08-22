@@ -16,7 +16,7 @@
 			CheckBalance();
 		}
 	}
-
+	
 	function CheckBalance() {
 
 		var gcn = jQuery("#gcnumber").val();
@@ -49,17 +49,17 @@
 					jQuery("#showNewCheckButton").addClass("col-sm-6");
 				}
 
-				jQuery("#spnOrigAmt").text("$" + data.OrigAmt);
+				jQuery("#spnOrigAmt").text(data.currencyCode + data.OrigAmt);
 				jQuery("#spnNbr").text(data.Nbr);
 				jQuery("#spnStat").text(data.Stat);
-				jQuery("#spnBal").text("$" + data.Bal);
+				jQuery("#spnBal").text(data.currencyCode + data.Bal);
 				jQuery("#spnOrigDt").text(getDateWithFormat(data.OrigDt + ' 00:00:00'));
 				jQuery.each(data.Txs, function (i, val) {
 					var newDiv = jQuery(`<div id="activityResult` + i + `" class="activityResult clearfix"> <div class="col-sm-4"> <div class="colDate atCol"></div> </div> <div class="col-sm-4"> <div class="colUsed atCol"></div> </div> <div class="col-sm-4"> <div class="colAmount atCol"></div> </div> </div>`);
 					jQuery("#activityResults").append(newDiv)
 					jQuery("#activityResult" + i + " .colDate").text(getDateWithFormat(val.Dt));
 					jQuery("#activityResult" + i + " .colUsed").text(val.Typ.replace('SV ', ''));
-					jQuery("#activityResult" + i + " .colAmount").text("$" + val.Amt);
+					jQuery("#activityResult" + i + " .colAmount").text(data.currencyCode + val.Amt);
 				});
 				jQuery("#divBalanceBlock").removeClass("hide");
 				jQuery("#checkBalanceForm").addClass("hide");
@@ -132,7 +132,7 @@
 
 						<div id="addFundsSelectedAmount">
 							<div class="addFundsTitle">Reload Amount:</div>
-							<div class="balance" id="addFundsAmount">$5</div>
+							<div class="balance" id="addFundsAmount">[priceCurrency]5</div>
 						</div>
 
 						<div id="addFundsLoading"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
@@ -391,6 +391,7 @@ input.txtBoxStyle.form-control {
 <script>
 
 	var selectedOptioId = 0;
+	var currencySymbol = '[priceCurrency]';
 
 	jQuery("#showActivity").click(function(e){
 		e.preventDefault();
@@ -536,7 +537,7 @@ input.txtBoxStyle.form-control {
 
 	function selectAmountOption(optionLabelItem){
 		jQuery('#addFundsAmount').empty();
-		jQuery('#addFundsAmount').append(optionLabelItem.innerText);	
+		jQuery('#addFundsAmount').append(currencySymbol + optionLabelItem.innerText.replace('$', '').trim());
 
 		if(jQuery('#specialamount'))
 			jQuery('#specialamount').val('');
@@ -556,7 +557,7 @@ input.txtBoxStyle.form-control {
 			}
 		  
 		  	jQuery('#addFundsAmount').empty();
-			jQuery('#addFundsAmount').append(`$${jQuery(this).val()}`);
+			jQuery('#addFundsAmount').append(`${currencySymbol}${jQuery(this).val()}`);
 
         }); 
 
@@ -570,7 +571,7 @@ input.txtBoxStyle.form-control {
 			} 
 		
 			jQuery('#addFundsAmount').empty();
-		  	jQuery('#addFundsAmount').append(`$${jQuery(this).val()}`);
+			jQuery('#addFundsAmount').append(`${currencySymbol}${jQuery(this).val()}`);
 
 	  }); 
 
