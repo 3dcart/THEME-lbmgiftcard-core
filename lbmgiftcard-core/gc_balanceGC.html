@@ -32,6 +32,9 @@
 
 		jQuery("#giftCardDetails1").removeClass("hide");
 		jQuery("#showAddFundsButton").removeClass("hide");
+		jQuery("#giftCardAmount").removeClass("hide");
+		
+		jQuery("#showAddFundsButton").removeClass("hide");
 		jQuery("#showNewCheckButton").removeClass("col-sm-4");
 		jQuery("#showNewCheckButton").removeClass("col-sm-6");
 		jQuery("#showNewCheckButton").removeClass("col-sm-12");
@@ -43,17 +46,14 @@
 
 				if(data.isGivex != undefined && data.isGivex == true){
 
-					if(data.primaryCode == undefined){
-						jQuery("#giftCardAmount").addClass("hide");
-					}else{
-						if(data.primaryCode == 9140){
-							jQuery("#giftCardAmount").addClass("hide");
-							jQuery("#showAddFundsButton").addClass("hide");
-							jQuery("#showNewCheckButton").removeClass("col-sm-4");
-							jQuery("#showNewCheckButton").addClass("col-sm-12");
-						}else{
-							jQuery("#giftCardDetails1").addClass("hide");
-						}
+					jQuery("#giftCardAmount").addClass("hide");
+
+					if (data.primaryCode == 9140) {
+						jQuery("#showAddFundsButton").addClass("hide");
+						jQuery("#showNewCheckButton").removeClass("col-sm-4");
+						jQuery("#showNewCheckButton").addClass("col-sm-12");
+					} else if (data.primaryCode != undefined) {
+						jQuery("#giftCardDetails1").addClass("hide");
 					}
 					
 					jQuery("#giftCardOriginalDate").addClass("hide");
