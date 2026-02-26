@@ -1769,20 +1769,7 @@ div#mobile-sticky-checkout,div#cart-right,#dropdown-cart span.qty-nav {
     padding-bottom: 20px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.balanceBtns {	
+	display: flex;
+	justify-content: center;
+}

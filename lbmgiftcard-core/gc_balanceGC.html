@@ -30,13 +30,32 @@
 		jQuery("#checkoutBtns").addClass("hide");
 		jQuery("#addFunds").addClass("hide");
 
+		jQuery("#giftCardDetails1").removeClass("hide");
+		jQuery("#showAddFundsButton").removeClass("hide");
+		jQuery("#giftCardAmount").removeClass("hide");
+		
+		jQuery("#showAddFundsButton").removeClass("hide");
+		jQuery("#showNewCheckButton").removeClass("col-sm-4");
+		jQuery("#showNewCheckButton").removeClass("col-sm-6");
+		jQuery("#showNewCheckButton").removeClass("col-sm-12");
+
 		verifyCheckoutButton();
 
 		jQuery.post("gc_balance.asp", "gcnumber=" + gcn + "&g-recaptcha-response=" + jQuery('#GCrecaptchaRobot textarea').val(), function (data) {
 			if (data.success) {
 
 				if(data.isGivex != undefined && data.isGivex == true){
-					jQuery("#giftCardDetails1").addClass("hide");
+
+					jQuery("#giftCardAmount").addClass("hide");
+
+					if (data.primaryCode == 9140) {
+						jQuery("#showAddFundsButton").addClass("hide");
+						jQuery("#showNewCheckButton").removeClass("col-sm-4");
+						jQuery("#showNewCheckButton").addClass("col-sm-12");
+					} else if (data.primaryCode != undefined) {
+						jQuery("#giftCardDetails1").addClass("hide");
+					}
+					
 					jQuery("#giftCardOriginalDate").addClass("hide");
 					jQuery("#showActivityButton").addClass("hide");
 					jQuery("#giftCardDetails2").removeClass("text-right");
