@@ -158,10 +158,12 @@
 
 					</div>
 					<div class="balanceBtns row" id="balanceBtns">
+						<!--START: addFundsButton-->
 						<div class="col-sm-4" id="showAddFundsButton">
 							<!-- <a href="" class="btn btn-default btn-inverse gc-field-submit" id="showAddFunds">$ Add Funds</a> -->
 							<input type="button" value="$ Add Funds" class="btn btn-default btn-inverse gc-field-submit" id="showAddFunds">
 						</div>
+						<!--END: addFundsButton-->
 						<div class="col-sm-4" id="showActivityButton">
 							<a href="" class="btn btn-default btn-inverse gc-field-submit" id="showActivity">Show Activity</a>
 						</div>
@@ -274,6 +276,13 @@ input.txtBoxStyle.form-control {
     font-size: 64px;
     font-weight: 500;
     height: 62px;
+}
+.balanceBtns {
+    display: flex;
+    justify-content: center;
+}
+.balanceBtns > [class*="col-"] {
+    float: none;
 }
 .balanceBtns a{
     width: 100%;
