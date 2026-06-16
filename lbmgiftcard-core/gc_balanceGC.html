@@ -52,6 +52,12 @@
 						jQuery("#showAddFundsButton").addClass("hide");
 						jQuery("#showNewCheckButton").removeClass("col-sm-4");
 						jQuery("#showNewCheckButton").addClass("col-sm-12");
+					} else if (data.primaryCode == 9036) {
+						// DFN-4315: invalid card — show data.Stat in #noresults instead of "$0.00" balance
+						jQuery("#noresults h3").text(data.Stat);
+						jQuery("#noresults").removeClass("hide");
+						grecaptcha.reset();
+						return;
 					} else if (data.primaryCode != undefined) {
 						jQuery("#giftCardDetails1").addClass("hide");
 					}
