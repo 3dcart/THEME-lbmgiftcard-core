@@ -182,7 +182,7 @@
         else {stats_c=screen.pixelDepth;}
         stats_j=navigator.javaEnabled();
         info='w=' + stats_w + '&h=' + stats_h + '&c=' + stats_c + '&r=' + stats_f + '&u='+ stats_u + '&fs=' + stats_fs + '&b=' + stats_b + '&x=' + stats_x + '&cat=' + catID + '&prd=' + prdID;
-        document.write('<img src="' + file + '?'+info+ '" width="1" height="1" border="0" alt="stats" />');
+        (new Image()).src = file + '?' + info;
         //]]>
     </script>
     <noscript>
