@@ -658,16 +658,18 @@
 									  <span class="range-slider__value">0</span>
 									</div>
 									<input type="hidden" size="3" name="qty-0" value="1" onChange="validateValues(document.add,1);" class="form-control" />
-									<label for="text[oname]" style="margin-top: 10px;font-weight: 300;">Enter whole amount between $<span id="minVal"></span> - $<span id="maxVal"></span> USD</label>
+									<label for="text[oname]" style="margin-top: 10px;font-weight: 300;">Enter whole amount between <span id="minVal"></span> - <span id="maxVal"></span></label>
                                 </div>
 								<script>
 								var ex1value = jQuery("#et1").text();
 								var ex2value = jQuery("#et2").text();
+								var gcCurrencySymbol = jQuery('body').data('currency') || '$';
+                                var gcCurrencyCode = (typeof _3d_item !== 'undefined' && _3d_item.currency) ? _3d_item.currency : 'USD';
 								jQuery("#rangeInput").attr("value", ex1value);
 								jQuery("#rangeInput").attr("min", ex1value);
 								jQuery("#rangeInput").attr("max", ex2value);
-								jQuery("#minVal").text(ex1value);
-								jQuery("#maxVal").text(ex2value);
+								jQuery("#minVal").text(gcCurrencySymbol + ex1value);
+								jQuery("#maxVal").text(gcCurrencySymbol + ex2value + " " + gcCurrencyCode);
 								var rangeSlider = function(){
 								  var slider = jQuery('.range-slider'),
 									  range = jQuery('.range-slider__range'),
@@ -677,11 +679,11 @@
 
 									value.each(function(){
 									  var value = jQuery(".range-slider__range").attr('value');
-									  jQuery(this).html("$" + value);
+									  jQuery(this).html(gcCurrencySymbol + value);
 									});
 
 									range.on('input.range-slider__range', function(){
-									  jQuery(this).next(value).html("$" + this.value);
+									  jQuery(this).next(value).html(gcCurrencySymbol + this.value);
 									});
 								  });
 								};
@@ -1315,7 +1317,7 @@
 
                             <div id="filteredSearchResults" style="display: none;">
                                 <span class="btn btn-primary filterRemover" data-filtertype="1"><b id="StarRating">4 Stars</b></span>
-                                <span class="btn btn-default" onclick="ShowStarRating('');"><b>Clear Filter</b> <span data-filtertype="6" class="filterRemover">×</span></span>
+                                <span class="btn btn-default" onclick="ShowStarRating('');"><b>Clear Filter</b> <span data-filtertype="6" class="filterRemover">ï¿½</span></span>
                             </div>
                         </div>
                         <div class="col-md-6 average-customer-rating-sm">
@@ -1807,7 +1809,7 @@ function checkPrevPurch(userId, caId) {
 <style>
 .embed-responsive-bycustom 
 {
- padding-bottom: 85%;
+ï¿½padding-bottom: 85%;
 }
 .range-slider {
   margin: 30px 0 0 0%;
