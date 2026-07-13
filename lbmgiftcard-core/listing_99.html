@@ -1102,6 +1102,9 @@
 <!--END: recaptcharobot_js-->
 
 <script>
+// Ensure currency_symbol has a fallback when the store's currency setting is empty
+currency_symbol = jQuery('body').data('currency') || currency_symbol || '$';
+
 function check_and_add_custom_gc(formx)
 {
     //perform preliminary validation - customized for GC shops

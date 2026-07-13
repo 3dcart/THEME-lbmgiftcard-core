@@ -1677,6 +1677,7 @@
 <!--END: recaptcharobot_js-->
 
 <script>
+currency_symbol = jQuery('body').data('currency') || currency_symbol || '$';
 var OriginalImage = jQuery('#listing_main_image_link').attr('href') ?? '';
 function SelectSwatch(id) {
     var imagepath = jQuery('#swatch-image-' + id).val();
