@@ -167,7 +167,7 @@
 						<!--START: addFundsButton-->
 						<div class="col-sm-4" id="showAddFundsButton">
 							<!-- <a href="" class="btn btn-default btn-inverse gc-field-submit" id="showAddFunds">$ Add Funds</a> -->
-							<input type="button" value="$ Add Funds" class="btn btn-default btn-inverse gc-field-submit" id="showAddFunds">
+							<input type="button" value="[priceCurrency] Add Funds" class="btn btn-default btn-inverse gc-field-submit" id="showAddFunds">
 						</div>
 						<!--END: addFundsButton-->
 						<div class="col-sm-4" id="showActivityButton">
@@ -571,7 +571,7 @@ input.txtBoxStyle.form-control {
 
 	function selectAmountOption(optionLabelItem){
 		jQuery('#addFundsAmount').empty();
-		jQuery('#addFundsAmount').append(currencySymbol + optionLabelItem.innerText.replace('$', '').trim());
+		jQuery('#addFundsAmount').append(currencySymbol + optionLabelItem.innerText.replace(/[^0-9.]/g, '').trim());
 
 		if(jQuery('#specialamount'))
 			jQuery('#specialamount').val('');

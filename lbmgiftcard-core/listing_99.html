@@ -635,7 +635,7 @@
 									  <span class="range-slider__value">0</span>
 									</div>
 									<input type="hidden" size="3" name="qty-0" value="1" onChange="validateValues(document.add,1);" class="form-control" />
-									<label for="text[oname]" style="margin-top: 10px;font-weight: 300;">Enter whole amount between $<span id="minVal"></span> - $<span id="maxVal"></span> USD</label>
+									<label for="text[oname]" style="margin-top: 10px;font-weight: 300;">Enter whole amount between <span id="minVal"></span> - <span id="maxVal"></span></label>
                                 </div>
                                 <script>
                                     if (typeof rangeSlider === "function")
@@ -1102,6 +1102,9 @@
 <!--END: recaptcharobot_js-->
 
 <script>
+// Ensure currency_symbol has a fallback when the store's currency setting is empty
+currency_symbol = jQuery('body').data('currency') || currency_symbol || '$';
+
 function check_and_add_custom_gc(formx)
 {
     //perform preliminary validation - customized for GC shops
@@ -1237,22 +1240,25 @@ function checkPrevPurch(userId, caId) {
             jQuery("#rangeInput").attr("step", step); // set step attribute on input
         }
       
+        var gcCurrencySymbol = jQuery('body').data('currency') || '$';
+        var gcCurrencyCode = (typeof _3d_item !== 'undefined' && _3d_item.currency) ? _3d_item.currency : 'USD';
+
         jQuery("#rangeInput").attr("value", min);
         jQuery("#rangeInput").attr("min", min);
         jQuery("#rangeInput").attr("max", max);
-        jQuery("#minVal").text(min);
-        jQuery("#maxVal").text(max);
-                
+        jQuery("#minVal").text(gcCurrencySymbol + min);
+        jQuery("#maxVal").text(gcCurrencySymbol + max + " " + gcCurrencyCode);
+
         var slider = jQuery('.range-slider'),
             range = jQuery('.range-slider__range'),
             value = jQuery('.range-slider__value');
         slider.each(function(){
             value.each(function(){
                 var value = jQuery(".range-slider__range").attr('value');
-                jQuery(this).html("$" + value);
+                jQuery(this).html(gcCurrencySymbol + value);
             });
             range.on('input.range-slider__range', function(){
-                jQuery(this).next(value).html("$" + this.value);
+                jQuery(this).next(value).html(gcCurrencySymbol + this.value);
             });
         });
     };
