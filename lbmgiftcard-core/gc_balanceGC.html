@@ -425,7 +425,8 @@ input.txtBoxStyle.form-control {
 <script>
 
 	var selectedOptioId = 0;
-	var currencySymbol = '[priceCurrency]';
+	var currencySymbol = '[priceCurrency]' || '$';
+	jQuery("#showAddFunds").val(currencySymbol + ' Add Funds');
 
 	jQuery("#showActivity").click(function(e){
 		e.preventDefault();
